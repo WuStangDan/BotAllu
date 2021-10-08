@@ -81,7 +81,7 @@ def update_player_data():
         matchid = match['metadata']['matchid']
         if matchid in db["players"][player['puuid']]['parsed_matches']:
           # Potentially update friend score.
-          if len(known_players) > db["players"][player['puuid']]['parsed_matches'][matchid]:
+          if (len(known_players)-1) > db["players"][player['puuid']]['parsed_matches'][matchid]:
             db["players"][player['puuid']]['friend_score'] += len(known_players) - 1 - db["players"][player['puuid']]['parsed_matches'][matchid]
           db["players"][player['puuid']]['parsed_matches'][matchid] = len(known_players) - 1
           continue
@@ -108,7 +108,7 @@ def update_player_data():
     
 def generate_leaderboard():
   update_player_data()
-  headers = ['', 'Friend Score', 'Wins', 'Kills', 'Playtime (min)']
+  headers = ['', 'Friend Score', 'Wins', 'Kills', 'Playtime']
   table = []
   for puuid in db["players"]:
     d = db["players"][puuid]
@@ -116,17 +116,17 @@ def generate_leaderboard():
     row += [d['friend_score']]
     row += [d['wins']]
     row += [d['kills']]
-    row += [round(d['total_minutes'])]
+    row += [str(round(d['total_minutes']/60)) + ' hrs']
     
     table += [row]
 
   # Sort by Friend Score, descending.
   table.sort(reverse=True, key=lambda x: (x[1], x[2], x[3], x[4]))
   
-  leaderboard = tabulate(table, headers=headers)
+  leaderboard = tabulate(table, headers=headers, colalign=("left","right","right","right","right"))
   # Add ticks to make text fixed width and add description.
   leaderboard = '`' + leaderboard
-  leaderboard += '\n\n\n * Only games played with friends count.'
+  leaderboard += '\n\n * Only games played with friends count.'
   leaderboard += '\n ** To add friends use \"!BotAllu adduser Riotname#RiotNumber\"'
   leaderboard += '\n *** For a game with you and 2 friends, your friend score is 2. `'
   return leaderboard

@@ -1,11 +1,10 @@
 import discord
 from discord.ext import tasks
-from discord.ext.commands import Bot
-from asyncio import sleep
 import os
-import json
 from replit import db
 import val
+from flask_server import keep_alive
+import bookclub
 
 client = discord.Client()
 
@@ -17,6 +16,9 @@ async def on_ready():
     # key: player puuid
     # value: dict containing player stats.
     db["players"] = {}
+
+  if "bookclub" not in db.keys():
+    db["bookclub"] = {}
   # Start leaderboard continous task.
   update_leaderboard.start()
 
@@ -26,8 +28,26 @@ async def on_message(message):
   if message.author == client.user:
     return
   
+
+  ###
+  # Repeat
+  ### 
+  if message.content.startswith('!BotAllu repeat '):
+    if message.author.name != 'Ender' or message.author.discriminator != '8157':
+      print("Repeat by:")
+      print(message.author)
+      print('failed.')
+      return
+    await message.channel.send(message.content[16:])
+    await message.delete()
+    return
+
+  ###
+  # Valorant
+  ###
   if message.content.startswith('!BotAllu help'):
     await message.channel.send('!BotAllu adduser RiotName#RiotNumber')
+    return
 
   if message.content.startswith('!BotAllu adduser'):
     if val.add_new_player(message.content[16:]):
@@ -35,14 +55,54 @@ async def on_message(message):
     else:
       # Function will return none if the string passed can't be parsed or is othwerwise invalid.
       await message.channel.send('Invalid player name/tag or player already added.')
+    return
  
-  
   # Sets the current channel to the leaderboard channel.
   if message.content.startswith('!BotAllu set'):
     db["leaderboard_channel_id"] = message.channel.id
     await message.channel.send('Leaderboard channel set here!')
+    return
 
-@tasks.loop(seconds=5)
+  ###
+  # BookClub
+  ###
+  if message.content.startswith('!bookclub '):
+    if message.content[10:18] == "newgame ":
+      bookclub_msg = await message.channel.send('Bookclub progress will go here! Add a player.')
+      db['bookclub'] = {}
+      db['bookclub']['channel_id'] = message.channel.id
+      db['bookclub']['message_id'] = bookclub_msg.id
+      db['bookclub']['game_name'] = message.content[18:]
+      db['bookclub']['players'] = {}
+      return
+    elif message.content[10:] == 'bump':
+      ## UNTESTED.
+      # Delete old message.
+      #channel = client.get_channel(db['bookclub']['channel_id'])
+      #msg = await channel.fetch_message(db['bookclub']['message_id'])
+      #msg.delete()
+
+      #db['bookclub']['channel_id'] = message.channel.id
+      #bookclub_msg = await message.channel.send(bookclub.progress())
+      #db['bookclub']['message_id'] = bookclub_msg.id
+      #message.delete()
+      return
+
+    progress = bookclub.parse_message(message.content[10:])
+    if progress == False or type(progress) != str:
+      # Output of parse_message should be false for error or string for success.
+      await message.channel.send('Invalid command. Please delete this message and yours and try again.')
+      return
+    
+    # Delete users message to keep channel clean.
+    await message.delete()
+    # Edit existing message.
+    channel = client.get_channel(db['bookclub']['channel_id'])
+    msg = await channel.fetch_message(db['bookclub']['message_id'])
+    await msg.edit(content=progress)
+
+
+@tasks.loop(seconds=600)
 async def update_leaderboard():
   if "leaderboard_channel_id" not in db.keys():
     return
@@ -54,4 +114,6 @@ async def update_leaderboard():
   if msg.author == client.user:
     await msg.edit(content=leaderboard)
 
+
+keep_alive()
 client.run(os.environ['TOKEN'])

@@ -10,6 +10,7 @@ discord = "^1.7.3"
 tasks = "^2.8.0"
 replit = "^3.2.4"
 tabulate = "^0.8.9"
+Flask = "^2.0.1"
 
 [tool.poetry.dev-dependencies]
 
