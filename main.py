@@ -5,6 +5,7 @@ from replit import db
 import val
 from flask_server import keep_alive
 import bookclub
+import cheapshark_deals
 
 client = discord.Client()
 
@@ -19,15 +20,20 @@ async def on_ready():
 
   if "bookclub" not in db.keys():
     db["bookclub"] = {}
+
+  # Used to store deals so that the same one isn't posted multiple times.
+  if "dealIDs" not in db.keys():
+    db["dealIDs"] = {}
   # Start leaderboard continous task.
   update_leaderboard.start()
+  # Start cheapshark continous tasks
+  cheapshark.start()
 
 @client.event
 async def on_message(message):
   # Ignore our own messages.
   if message.author == client.user:
     return
-  
 
   ###
   # Repeat
@@ -101,6 +107,14 @@ async def on_message(message):
     msg = await channel.fetch_message(db['bookclub']['message_id'])
     await msg.edit(content=progress)
 
+  ###
+  # Cheapshark Deals
+  ###
+  if message.content.startswith('!BotAllu dealset'):
+    db["dealIDs"]['channel_id'] = message.channel.id
+    await message.channel.send('Deals channel set here!')
+    return
+
 
 @tasks.loop(seconds=600)
 async def update_leaderboard():
@@ -114,6 +128,18 @@ async def update_leaderboard():
   if msg.author == client.user:
     await msg.edit(content=leaderboard)
 
+@tasks.loop(seconds=3600)
+async def cheapshark():
+  if "dealIDs" not in db.keys():
+    return
+  if 'channel_id' not in db['dealIDs'].keys():
+    return
+  channel_id = db['dealIDs']['channel_id']
+  channel = client.get_channel(channel_id)
+  deal = cheapshark_deals.pull_deals()
+  if deal == None:
+    return
+  await channel.send(deal)
 
 keep_alive()
 client.run(os.environ['TOKEN'])
