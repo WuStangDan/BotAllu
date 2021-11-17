@@ -9,25 +9,34 @@ def parse_message(msg):
   """
   if msg[0:4] == "add ":
     return add(msg[4:])
+  elif msg[0:6] == "[add] ":
+    return add(msg[6:])
   elif msg[0:7] == "update ":
     return update(msg[7:])
   elif msg[0:7] == "remove ":
     return remove(msg[7:])
+  elif msg[0:9] == "[remove] ":
+    return remove(msg[9:])
 
   return False
 
 
 def status_str(num):
+  # Filter out square brackets.
+  if type(num) == str:
+    num = num.split('[')[-1]
+    num = num.split(']')[0]
+
   num = int(num)
   if num == -1:
     return ':x:'
-  if num == 0:
+  if num >= 0 and num < 25:
     return ':clock12:'
-  if num == 25:
+  if num >= 25 and num < 50:
     return ':clock3:'
-  if num == 50:
+  if num >= 50 and num < 75:
     return ':clock6:'
-  if num == 75:
+  if num >= 75 and num < 100:
     return ':clock9:'
   if num == 100:
     return ':white_check_mark:'
@@ -47,8 +56,9 @@ def progress():
     progress_str += '`\n'
   
   progress_str += '\n` * !bookclub newgame GAMENAME'
-  progress_str += '\n * !bookclub [add,remove] PLAYER'
-  progress_str += '\n * !bookclub update PLAYER#[0,25,50,75,100]`'
+  progress_str += '\n * !bookclub add PLAYER'
+  progress_str += '\n * !bookclub update PLAYER#[0,25,50,75,100]. Ex. Ender#75'
+  progress_str += '\n * !bookclub bump`'
   return progress_str
 
 def add(player):

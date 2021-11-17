@@ -6,6 +6,7 @@ import val
 from flask_server import keep_alive
 import bookclub
 import cheapshark_deals
+from oilers import OilersTracker
 
 client = discord.Client()
 
@@ -18,16 +19,24 @@ async def on_ready():
     # value: dict containing player stats.
     db["players"] = {}
 
+  # Used to store bookclub info.
   if "bookclub" not in db.keys():
     db["bookclub"] = {}
 
   # Used to store deals so that the same one isn't posted multiple times.
   if "dealIDs" not in db.keys():
     db["dealIDs"] = {}
+
+  # Used to store info for oiler tracker.
+  if "oiler_games" not in db.keys():
+    db["oiler_games"] = {}
+  
   # Start leaderboard continous task.
   update_leaderboard.start()
   # Start cheapshark continous tasks
   cheapshark.start()
+  # Start oiler tracker task.
+  update_oilers.start()
 
 @client.event
 async def on_message(message):
@@ -62,7 +71,7 @@ async def on_message(message):
       # Function will return none if the string passed can't be parsed or is othwerwise invalid.
       await message.channel.send('Invalid player name/tag or player already added.')
     return
- 
+
   # Sets the current channel to the leaderboard channel.
   if message.content.startswith('!BotAllu set'):
     db["leaderboard_channel_id"] = message.channel.id
@@ -74,7 +83,7 @@ async def on_message(message):
   ###
   if message.content.startswith('!bookclub '):
     if message.content[10:18] == "newgame ":
-      bookclub_msg = await message.channel.send('Bookclub progress will go here! Add a player.')
+      bookclub_msg = await message.channel.send('Bookclub progress will go here! Add a player with "!bookclub add PLAYERNAME".')
       db['bookclub'] = {}
       db['bookclub']['channel_id'] = message.channel.id
       db['bookclub']['message_id'] = bookclub_msg.id
@@ -82,16 +91,15 @@ async def on_message(message):
       db['bookclub']['players'] = {}
       return
     elif message.content[10:] == 'bump':
-      ## UNTESTED.
       # Delete old message.
-      #channel = client.get_channel(db['bookclub']['channel_id'])
-      #msg = await channel.fetch_message(db['bookclub']['message_id'])
-      #msg.delete()
+      channel = client.get_channel(db['bookclub']['channel_id'])
+      msg = await channel.fetch_message(db['bookclub']['message_id'])
+      await msg.delete()
 
-      #db['bookclub']['channel_id'] = message.channel.id
-      #bookclub_msg = await message.channel.send(bookclub.progress())
-      #db['bookclub']['message_id'] = bookclub_msg.id
-      #message.delete()
+      db['bookclub']['channel_id'] = message.channel.id
+      bookclub_msg = await message.channel.send(bookclub.progress())
+      db['bookclub']['message_id'] = bookclub_msg.id
+      await message.delete()
       return
 
     progress = bookclub.parse_message(message.content[10:])
@@ -114,6 +122,13 @@ async def on_message(message):
     db["dealIDs"]['channel_id'] = message.channel.id
     await message.channel.send('Deals channel set here!')
     return
+
+  ###
+  # Oiler Tracker
+  ###
+  if message.content.startswith('!BotAllu oilers set'):
+    db['oiler_games']['channel_id'] = message.channel.id
+    await message.channel.send('Oiler tracker set here.')
 
 
 @tasks.loop(seconds=600)
@@ -140,6 +155,18 @@ async def cheapshark():
   if deal == None:
     return
   await channel.send(deal)
+
+@tasks.loop(seconds=600)
+async def update_oilers():
+  if "oiler_games" not in db.keys():
+    return
+  if 'channel_id' not in db['oiler_games']:
+    return
+  channel_id = db['oiler_games']['channel_id']
+  channel = client.get_channel(channel_id)
+  oiler_tracker = OilersTracker(db['oiler_games'])
+  await oiler_tracker.run(channel)
+  
 
 keep_alive()
 client.run(os.environ['TOKEN'])
