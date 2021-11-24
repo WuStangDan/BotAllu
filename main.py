@@ -131,7 +131,7 @@ async def on_message(message):
     await message.channel.send('Oiler tracker set here.')
 
 
-@tasks.loop(seconds=600)
+@tasks.loop(seconds=1200)
 async def update_leaderboard():
   if "leaderboard_channel_id" not in db.keys():
     return
