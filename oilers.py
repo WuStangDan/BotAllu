@@ -1,6 +1,7 @@
 import requests
 import json
 from datetime import datetime, timedelta
+from bs4 import BeautifulSoup
 import discord
 
 
@@ -52,6 +53,21 @@ class OilersTracker:
         title += str(home['leagueRecord']['losses']) + '-'
         title += str(home['leagueRecord']['ot']) + ')'
         return str(info['gamePk']), title
+    
+    def playoff_odds(self):
+        url = 'https://projects.fivethirtyeight.com/2022-nhl-predictions/'
+        page = requests.get(url)
+        soup = BeautifulSoup(page.content, 'html.parser')
+        # Get name index to match playoff percent.
+        names = soup.find_all('span', class_='name')
+        for i in range(len(names)):
+            if names[i].text == 'Oilers':
+                break
+        
+        odds = soup.find_all('td', class_='odds')
+        # Multiplied by 3 because list contains playoff odds, 
+        # make cup final odds, and win stanely cup odds for each team.
+        return odds[i*3].text
 
     def print_next_game_time(self):
         oilers_next = self.api_team_next()
@@ -64,6 +80,7 @@ class OilersTracker:
         date = datetime.strptime(oilers_next['gameDate'], '%Y-%m-%dT%H:%M:%SZ')
         date -= timedelta(hours=7)
         next_game_str += date.__str__()[:-3] + ' MT'
+        next_game_str += '\n\nPlayoff Odds: ' + self.playoff_odds()
         return next_game_str
 
     def print_game_info(self, game_id, title):
