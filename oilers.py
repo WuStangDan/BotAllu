@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import discord
 
 
+
 class OilersTracker:
     def __init__(self, db):
         self.replit_db = db
@@ -44,17 +45,22 @@ class OilersTracker:
         home = info['teams']['home']
         # Away team name and record.
         title = away['team']['name'] + ' '
-        title += '(' + str(away['leagueRecord']['wins']) + '-'
-        title += str(away['leagueRecord']['losses']) + '-'
-        title += str(away['leagueRecord']['ot']) + ') at '
+        if 'nextGameSchedule' in api['teams'][0]:
+            #TODO freeze title when in next game.
+            title += '(' + str(away['leagueRecord']['wins']) + '-'
+            title += str(away['leagueRecord']['losses']) + '-'
+            title += str(away['leagueRecord']['ot']) + ') '
+        title += 'at '
         # Home team name and record.
         title += home['team']['name'] + ' '
-        title += '(' + str(home['leagueRecord']['wins']) + '-'
-        title += str(home['leagueRecord']['losses']) + '-'
-        title += str(home['leagueRecord']['ot']) + ')'
+        if 'nextGameSchedule' in api['teams'][0]:
+            #TODO freeze title when in next game.
+            title += '(' + str(home['leagueRecord']['wins']) + '-'
+            title += str(home['leagueRecord']['losses']) + '-'
+            title += str(home['leagueRecord']['ot']) + ')'
         return str(info['gamePk']), title
     
-    def playoff_odds(self):
+    def stats_projection(self):
         url = 'https://projects.fivethirtyeight.com/2022-nhl-predictions/'
         page = requests.get(url)
         soup = BeautifulSoup(page.content, 'html.parser')
@@ -63,11 +69,20 @@ class OilersTracker:
         for i in range(len(names)):
             if names[i].text == 'Oilers':
                 break
-        
+        projected_points = soup.find_all('td', class_='proj-points')
+        projected_points = projected_points[i].text
         odds = soup.find_all('td', class_='odds')
         # Multiplied by 3 because list contains playoff odds, 
         # make cup final odds, and win stanely cup odds for each team.
-        return odds[i*3].text
+        make_playoffs = odds[i*3+0].text
+        make_final = odds[i*3+1].text
+        win_cup = odds[i*3+2].text
+
+        ordinal = lambda n: "%d%s" % (n,"tsnrhtdd"[(n//10%10!=1)*(n%10<4)*n%10::4])
+
+        win_cup_rank = ordinal(i + 1)
+        
+        return projected_points, make_playoffs, make_final, win_cup, win_cup_rank
 
     def print_next_game_time(self):
         oilers_next = self.api_team_next()
@@ -80,7 +95,10 @@ class OilersTracker:
         date = datetime.strptime(oilers_next['gameDate'], '%Y-%m-%dT%H:%M:%SZ')
         date -= timedelta(hours=7)
         next_game_str += date.__str__()[:-3] + ' MT'
-        next_game_str += '\n\nPlayoff Odds: ' + self.playoff_odds()
+        projected_points, make_playoffs, make_final, win_cup, win_cup_rank = self.stats_projection()
+        next_game_str += '\n`\nEDM Stats Projection (fivethirtyeight.com)'
+        next_game_str += '\nProj. Points / Make Playoffs: ' + projected_points + ' / ' + make_playoffs
+        next_game_str += '\nWin Cup Rank / Win Cup %:     ' + win_cup_rank + ' / ' + win_cup + '`'
         return next_game_str
 
     def print_game_info(self, game_id, title):
@@ -132,7 +150,6 @@ class OilersTracker:
         if game_embed == None:
             # Nothing to output.
             return
-
         if game_id not in self.replit_db:
             # Message doesn't exist, create and add to db.
             msg = await channel.send(embed=game_embed)
@@ -143,6 +160,7 @@ class OilersTracker:
             await msg.edit(embed=game_embed)
 
     async def run(self, channel):
+        # TODO Add proper error handling if no nextgameschedule.
         # Get prev game ID and attempt to output.
         prev_game_id, title = self.get_game_id_and_title(self.api_team_prev())
         prev_embed = self.print_game_info(prev_game_id, title)

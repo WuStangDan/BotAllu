@@ -31,12 +31,12 @@ async def on_ready():
   if "oiler_games" not in db.keys():
     db["oiler_games"] = {}
   
-  # Start leaderboard continous task.
-  update_leaderboard.start()
   # Start cheapshark continous tasks
   cheapshark.start()
   # Start oiler tracker task.
   update_oilers.start()
+  # Start leaderboard continous task.
+  update_leaderboard.start()
 
 @client.event
 async def on_message(message):
