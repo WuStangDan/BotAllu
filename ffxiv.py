@@ -23,7 +23,7 @@ class StatsFFXIV:
             name_and_id[friend["Name"]] = friend["ID"]
         return name_and_id
 
-    def get_highest_level_class(self, name, id):
+    def get_highest_level_job(self, name, id):
         # For a lodgestone ID, enter name and highest job level into db.
         # This function is called outside of this class so this class doesn't need to be declared async.
         # This is because lodgestone has a 1 api call per second rate limit.
@@ -31,11 +31,10 @@ class StatsFFXIV:
         if response.status_code != 200:
             return
         character_data = json.loads(response.text)['Character']
-        highest_level_class = ['', 0]
+        self.highest_job[name] = {'level': 0}
         # The first 20 classes are the non-crafting classes.
         for job in character_data['ClassJobs'][:20]:
-            if job['Level'] > highest_level_class[1]:
-                self.highest_job[name] = {}
+            if job['Level'] > self.highest_job[name]['level']:
                 self.highest_job[name]['level'] = job['Level']
                 job_name = job['Name']
                 if job['Level'] >= 30:
@@ -48,7 +47,7 @@ class StatsFFXIV:
 
     def generate_stats_table(self):
         # Create the output that will fill the discord message.
-        headers = ['','Job','Level','XP Bar']
+        headers = ['','Highest Job','Level','XP Bar']
         table = []
         for name, info in self.highest_job.items():
             row = [name]
@@ -66,3 +65,21 @@ class StatsFFXIV:
         message = tabulate(table, headers=headers, colalign=("left","right","right","right"))
         # Ticks required for discord fixed width.
         return '`' + message + '`'
+
+    def save_group_photo(self):
+        images_in_row = 6
+        num_rows = math.ceil(len(self.photos) / images_in_row)
+        group_photo = Image.new('RGB', (96*images_in_row, 96*num_rows))
+        photos = []
+
+        for row in self.table:
+            photos += [Image.open(requests.get(self.photos[row[0]], stream=True).raw)]
+        
+        # Combine photos.
+        for r in range(num_rows):
+            for c in range(images_in_row):
+                if len(photos) == 0:
+                    break
+                group_photo.paste(photos.pop(0), (96*r, 98*c))
+
+        group_photo.save('group_photo.png')
