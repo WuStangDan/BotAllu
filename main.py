@@ -7,6 +7,8 @@ from flask_server import keep_alive
 import bookclub
 import cheapshark_deals
 from oilers import OilersTracker
+from ffxiv import StatsFFXIV
+import asyncio
 
 client = discord.Client()
 
@@ -30,11 +32,16 @@ async def on_ready():
   # Used to store info for oiler tracker.
   if "oiler_games" not in db.keys():
     db["oiler_games"] = {}
+
+  if "ffxiv" not in db.keys():
+      db["ffxiv"] = {}
   
   # Start cheapshark continous tasks
   cheapshark.start()
   # Start oiler tracker task.
   update_oilers.start()
+  # Start ffxiv task.
+  update_ffxiv.start()
   # Start leaderboard continous task.
   update_leaderboard.start()
 
@@ -130,6 +137,13 @@ async def on_message(message):
     db['oiler_games']['channel_id'] = message.channel.id
     await message.channel.send('Oiler tracker set here.')
 
+  ###
+  # FFXIV
+  ###
+  if message.content.startswith('!BotAllu ffxiv set'):
+      db['ffxiv']['channel_id'] = message.channel.id
+      await message.channel.send('FFXIV stats set here.')
+
 
 @tasks.loop(seconds=1200)
 async def update_leaderboard():
@@ -166,6 +180,29 @@ async def update_oilers():
   channel = client.get_channel(channel_id)
   oiler_tracker = OilersTracker(db['oiler_games'])
   await oiler_tracker.run(channel)
+
+@tasks.loop(seconds=3600)
+async def update_ffxiv():
+  if "ffxiv" not in db.keys():
+    return
+  if "channel_id" not in db['ffxiv']:
+    return
+  # Generate stats.
+  ffxiv = StatsFFXIV()
+  names_id = ffxiv.get_names_and_id()
+  for name, id in names_id.items():
+    # API has a 1 second limit.
+    await asyncio.sleep(3)
+    ffxiv.get_highest_level_class(name, id)
+  stats = ffxiv.generate_stats_table()
+    
+  # Overwrite previous message.
+  channel_id = db['ffxiv']['channel_id']
+  msg = await client.get_channel(channel_id).history(limit=1).flatten()
+  msg = msg[0]
+  if msg.author == client.user:
+    await msg.edit(content=stats)
+
   
 
 keep_alive()
