@@ -38,13 +38,13 @@ async def on_ready():
         db["ffxiv"] = {}
 
     # Start cheapshark continous tasks
-    #cheapshark.start()
+    cheapshark.start()
     # Start oiler tracker task.
     update_oilers.start()
     # Start ffxiv task.
     update_ffxiv.start()
     # Start leaderboard continous task.
-    #update_leaderboard.start()
+    update_leaderboard.start()
 
 
 @client.event
@@ -150,7 +150,10 @@ async def on_message(message):
     ###
     if message.content.startswith('!BotAllu ffxiv set'):
         db['ffxiv']['channel_id'] = message.channel.id
+        embed = discord.Embed(title="The Fellas")
+        await message.channel.send(embed=embed)
         await message.channel.send('FFXIV stats set here.')
+
 
     if message.content.startswith('!BotAllu testimage'):
         image_embed = discord.Embed(title="Group Photo")
@@ -212,13 +215,19 @@ async def update_ffxiv():
         await asyncio.sleep(3)
         ffxiv.get_highest_level_job(name, id)
     stats = ffxiv.generate_stats_table()
-
+    await ffxiv.upload_group_photo()
     # Overwrite previous message.
     channel_id = db['ffxiv']['channel_id']
-    msg = await client.get_channel(channel_id).history(limit=1).flatten()
-    msg = msg[0]
-    if msg.author == client.user:
-        await msg.edit(content=stats)
+    msg = await client.get_channel(channel_id).history(limit=2).flatten()
+    stats_msg = msg[0]
+    embed_msg = msg[1]
+    if stats_msg.author == client.user:
+        await stats_msg.edit(content=stats)
+    if embed_msg.author == client.user:
+        embed = discord.Embed(title="The Fellas")
+        embed.set_image(url=ffxiv.group_photo_url)
+        await embed_msg.edit(embed=embed)
+        
 
 
 keep_alive()

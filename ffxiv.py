@@ -1,6 +1,11 @@
 import requests
 import json
 from tabulate import tabulate
+from PIL import Image
+import math
+import io
+import os
+import asyncio
 
 
 class StatsFFXIV:
@@ -10,6 +15,7 @@ class StatsFFXIV:
         self.server = "Midgardsormr"
         self.xiv_api = "https://xivapi.com/character/"
         self.highest_job = {}
+        self.photos = {}
 
     def get_names_and_id(self):
         # Get the names and IDs of all Basu Tews friends.
@@ -31,6 +37,7 @@ class StatsFFXIV:
         if response.status_code != 200:
             return
         character_data = json.loads(response.text)['Character']
+        self.photos[name] = character_data['Avatar']
         self.highest_job[name] = {'level': 0}
         # The first 20 classes are the non-crafting classes.
         for job in character_data['ClassJobs'][:20]:
@@ -61,25 +68,48 @@ class StatsFFXIV:
         
         # Sort by level, descending.
         table.sort(reverse=True, key=lambda x: (x[2], x[3], x[0]))
+        self.table = table
 
         message = tabulate(table, headers=headers, colalign=("left","right","right","right"))
         # Ticks required for discord fixed width.
         return '`' + message + '`'
 
-    def save_group_photo(self):
-        images_in_row = 6
+
+    def image_to_byte_array(self, image:Image):
+        # Converts PIL Image into byte array.
+        imgByteArr = io.BytesIO()
+        image.save(imgByteArr, format='JPEG')
+        imgByteArr = imgByteArr.getvalue()
+        return imgByteArr
+
+    async def upload_group_photo(self):
+        images_in_row = 4
         num_rows = math.ceil(len(self.photos) / images_in_row)
-        group_photo = Image.new('RGB', (96*images_in_row, 96*num_rows))
+        group_photo = Image.new('RGB', (424*images_in_row, 493*num_rows))
         photos = []
 
         for row in self.table:
-            photos += [Image.open(requests.get(self.photos[row[0]], stream=True).raw)]
+            photos_url = self.photos[row[0]]
+            photos_url = photos_url.split('?')[0][:-12]
+            photos_url += 'l0_640x873.jpg'
+            photos += [Image.open(requests.get(photos_url, stream=True).raw)]
+            # (left, top, right, bottom)
+            photos[-1] = photos[-1].crop((108, 46, 532, 539))
+            # Sleep to not overload lodgestone rate limit.
+            await asyncio.sleep(2)
         
         # Combine photos.
-        for r in range(num_rows):
-            for c in range(images_in_row):
+        for c in range(num_rows):
+            for r in range(images_in_row):
                 if len(photos) == 0:
                     break
-                group_photo.paste(photos.pop(0), (96*r, 98*c))
+                group_photo.paste(photos.pop(0), (424*r, 493*c))
 
-        group_photo.save('group_photo.png')
+        imgur_url = "https://api.imgur.com/3/image"
+        
+        payload = {"image": self.image_to_byte_array(group_photo)}
+        headers = {'Authorization': 'Client-ID ' + os.environ['IMGUR_CLIENT_ID']}
+        
+        response = requests.request("POST", imgur_url, headers=headers, data=payload, files=[])
+        self.group_photo_url = json.loads(response.text)['data']['link']
+        
