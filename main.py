@@ -162,7 +162,7 @@ async def on_message(message):
         await message.channel.send(embed=image_embed)
 
 
-@tasks.loop(seconds=1200)
+@tasks.loop(seconds=4000)
 async def update_leaderboard():
     if "leaderboard_channel_id" not in db.keys():
         return
@@ -175,7 +175,7 @@ async def update_leaderboard():
         await msg.edit(content=leaderboard)
 
 
-@tasks.loop(seconds=3600)
+@tasks.loop(seconds=4100)
 async def cheapshark():
     if "dealIDs" not in db.keys():
         return
@@ -189,7 +189,7 @@ async def cheapshark():
     await channel.send(deal)
 
 
-@tasks.loop(seconds=600)
+@tasks.loop(seconds=900)
 async def update_oilers():
     if "oiler_games" not in db.keys():
         return
@@ -223,6 +223,7 @@ async def update_ffxiv():
     embed_msg = msg[1]
     if stats_msg.author == client.user:
         await stats_msg.edit(content=stats)
+    await asyncio.sleep(2)
     if embed_msg.author == client.user:
         embed = discord.Embed(title="The Fellas")
         embed.set_image(url=ffxiv.group_photo_url)
