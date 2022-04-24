@@ -35,6 +35,13 @@ class OilersTracker:
             return None
         return json.loads(r.content)
 
+    def playoffs_money_puck(self):
+        r = requests.get('https://moneypuck.com/moneypuck/simulations/simulations_recent.csv')
+        for row in r.text.splitlines():
+            if 'ALL,EDM' in row:
+                break
+        return row.split(',')[4:8]
+
     def get_game_id_and_title(self, api):
         if 'previousGameSchedule' in api['teams'][0]:
             info = api['teams'][0]['previousGameSchedule']['dates'][0][
@@ -95,10 +102,17 @@ class OilersTracker:
         date = datetime.strptime(oilers_next['gameDate'], '%Y-%m-%dT%H:%M:%SZ')
         date -= timedelta(hours=7)
         next_game_str += date.__str__()[:-3] + ' MT'
-        projected_points, make_playoffs, make_final, win_cup, win_cup_rank = self.stats_projection()
-        next_game_str += '\n`\nEDM Stats Projection (fivethirtyeight.com)'
-        next_game_str += '\nProj. Points / Make Playoffs: ' + projected_points + ' / ' + make_playoffs
-        next_game_str += '\nWin Cup Rank / Win Cup %:     ' + win_cup_rank + ' / ' + win_cup + '`'
+        # Regular Season
+        #projected_points, make_playoffs, make_final, win_cup, win_cup_rank = self.stats_projection()
+        #next_game_str += '\n`\nEDM Stats Projection (fivethirtyeight.com)'
+        #next_game_str += '\nProj. Points / Make Playoffs: ' + projected_points + ' / ' + make_playoffs
+        #next_game_str += '\nWin Cup Rank / Win Cup %:     ' + win_cup_rank + ' / ' + win_cup + '`'
+
+        # Playoffs
+        round1, round2, round3, cup = self.playoffs_money_puck()
+        next_game_str += '\n`\nEDM Odds Projection (moneypuck.com)'
+        next_game_str += f'\nWin Round 1: {float(round1)*100:.1f}% | Win Round 2: {float(round2)*100:.1f}%'
+        next_game_str += f'\nWin Conference: {float(round3)*100:.1f}% | Win Cup: {float(cup)*100:.1f}%`'
         return next_game_str
 
     def print_game_info(self, game_id, title):

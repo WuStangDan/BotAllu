@@ -7,7 +7,7 @@ from flask_server import keep_alive
 import bookclub
 import cheapshark_deals
 from oilers import OilersTracker
-from ffxiv import StatsFFXIV
+from ffxiv import StatsFFXIV, MaintenanceFFXIV
 import asyncio
 
 client = discord.Client()
@@ -154,6 +154,9 @@ async def on_message(message):
         await message.channel.send(embed=embed)
         await message.channel.send('FFXIV stats set here.')
 
+    if message.content.startswith('!BotAllu ffxiv news set'):
+        db['ffxiv']['maintenance_channel_id'] = message.channel.id
+        await message.channel.send('FFXIV news set here.')
 
     if message.content.startswith('!BotAllu testimage'):
         image_embed = discord.Embed(title="Group Photo")
@@ -207,6 +210,18 @@ async def update_ffxiv():
         return
     if "channel_id" not in db['ffxiv']:
         return
+    if "maintenance_channel_id" not in db['ffxiv']:
+        return
+
+    # Get maintenance news.
+    news = MaintenanceFFXIV(db['ffxiv'])
+    latest = news.get_maintenance()
+    if latest is not None:
+        maint_channel_id = db['ffxiv']['maintenance_channel_id']
+        maint_channel = client.get_channel(maint_channel_id)
+        await maint_channel.send(latest)
+        
+        
     # Generate stats.
     ffxiv = StatsFFXIV()
     names_id = ffxiv.get_names_and_id()

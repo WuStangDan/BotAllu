@@ -1,0 +1,5 @@
+In shell use command
+
+kill 1
+
+Note make sure to commit all changes as this might cause unsaved changes to reset.

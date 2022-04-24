@@ -1,13 +1,53 @@
 import requests
 import json
 from tabulate import tabulate
+from pytz import timezone
+from datetime import datetime
 from PIL import Image
 import math
 import io
 import os
 import asyncio
 
+class MaintenanceFFXIV:
+    def __init__(self, db):
+        self.api_url = 'https://lodestonenews.com/news/maintenance?locale=NA&limit=5'
+        self.db = db
+        if 'post_ids' not in self.db:
+            self.db['post_ids'] = {}
 
+    def get_maintenance(self):
+        response = requests.get(self.api_url)
+        response = json.loads(response.text)
+        for post in response:
+            if 'All Worlds' not in post['title']:
+                # Not world maintenance.
+                continue
+            if post['id'] in self.db['post_ids']:
+                # Already posted.
+                continue
+            self.db['post_ids'][post['id']] = 'posted'
+            latest_all_world = '`' + post['title']
+            if post['start'] is None:
+                # No start and end time supplied.
+                return latest_all_world + '`'
+            strp = '%Y-%m-%dT%H:%M:%S%z'
+            start = datetime.strptime(post['start'], strp)
+            alberta_time = timezone('MST7MDT')
+            strf = '%a %b %d %I:%M %p'
+            start = start.astimezone(alberta_time)
+            start = start.strftime(strf)
+            latest_all_world += ' ' + start
+            if post['end'] is None:
+                # No end time.
+                return latest_all_world + ' MST`'
+            end = datetime.strptime(post['end'], strp)
+            end = end.astimezone(alberta_time)
+            end = end.strftime(strf[3:])
+            latest_all_world += ' to ' + end + ' MST`'
+            return latest_all_world
+        return None
+            
 class StatsFFXIV:
     def __init__(self):
         self.basu_name = "Basu Tew"
