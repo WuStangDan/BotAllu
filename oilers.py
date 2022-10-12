@@ -3,7 +3,7 @@ import json
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 import discord
-
+#import pdb
 
 
 class OilersTracker:
@@ -36,7 +36,9 @@ class OilersTracker:
         return json.loads(r.content)
 
     def playoffs_money_puck(self):
-        r = requests.get('https://moneypuck.com/moneypuck/simulations/simulations_recent.csv')
+        r = requests.get(
+            'https://moneypuck.com/moneypuck/simulations/simulations_recent.csv'
+        )
         for row in r.text.splitlines():
             if 'ALL,EDM' in row:
                 break
@@ -52,23 +54,31 @@ class OilersTracker:
         home = info['teams']['home']
         # Away team name and record.
         title = away['team']['name'] + ' '
-        if 'nextGameSchedule' in api['teams'][0]:
-            #TODO freeze title when in next game.
-            title += '(' + str(away['leagueRecord']['wins']) + '-'
-            title += str(away['leagueRecord']['losses']) + '-'
-            title += str(away['leagueRecord']['ot']) + ') '
+        if 'previousGameSchedule' in api['teams'][0]:
+            # Avoid spoilers by hiding record of old game.
+            title += '|| '
+        title += '(' + str(away['leagueRecord']['wins']) + '-'
+        title += str(away['leagueRecord']['losses']) + '-'
+        title += str(away['leagueRecord']
+                     ['ot']) + ') '  # Doesn't appear during playoffs.
+        if 'previousGameSchedule' in api['teams'][0]:
+            title += ' ||'
         title += 'at '
         # Home team name and record.
         title += home['team']['name'] + ' '
-        if 'nextGameSchedule' in api['teams'][0]:
-            #TODO freeze title when in next game.
-            title += '(' + str(home['leagueRecord']['wins']) + '-'
-            title += str(home['leagueRecord']['losses']) + '-'
-            title += str(home['leagueRecord']['ot']) + ')'
+        if 'previousGameSchedule' in api['teams'][0]:
+            title += '|| '
+        title += '(' + str(home['leagueRecord']['wins']) + '-'
+        title += str(home['leagueRecord']['losses']) + '-'
+        title += str(home['leagueRecord']
+                     ['ot']) + ')'  # Doesn't appear during playoffs.
+        if 'previousGameSchedule' in api['teams'][0]:
+            title += ' ||'
+        title += ' - ' + info['status']['abstractGameState']
         return str(info['gamePk']), title
-    
+
     def stats_projection(self):
-        url = 'https://projects.fivethirtyeight.com/2022-nhl-predictions/'
+        url = 'https://projects.fivethirtyeight.com/2023-nhl-predictions/'
         page = requests.get(url)
         soup = BeautifulSoup(page.content, 'html.parser')
         # Get name index to match playoff percent.
@@ -79,16 +89,17 @@ class OilersTracker:
         projected_points = soup.find_all('td', class_='proj-points')
         projected_points = projected_points[i].text
         odds = soup.find_all('td', class_='odds')
-        # Multiplied by 3 because list contains playoff odds, 
+        # Multiplied by 3 because list contains playoff odds,
         # make cup final odds, and win stanely cup odds for each team.
-        make_playoffs = odds[i*3+0].text
-        make_final = odds[i*3+1].text
-        win_cup = odds[i*3+2].text
+        make_playoffs = odds[i * 3 + 0].text
+        make_final = odds[i * 3 + 1].text
+        win_cup = odds[i * 3 + 2].text
 
-        ordinal = lambda n: "%d%s" % (n,"tsnrhtdd"[(n//10%10!=1)*(n%10<4)*n%10::4])
+        ordinal = lambda n: "%d%s" % (n, "tsnrhtdd"[(n // 10 % 10 != 1) *
+                                                    (n % 10 < 4) * n % 10::4])
 
         win_cup_rank = ordinal(i + 1)
-        
+
         return projected_points, make_playoffs, make_final, win_cup, win_cup_rank
 
     def print_next_game_time(self):
@@ -103,23 +114,26 @@ class OilersTracker:
         date -= timedelta(hours=7)
         next_game_str += date.__str__()[:-3] + ' MT'
         # Regular Season
-        #projected_points, make_playoffs, make_final, win_cup, win_cup_rank = self.stats_projection()
-        #next_game_str += '\n`\nEDM Stats Projection (fivethirtyeight.com)'
-        #next_game_str += '\nProj. Points / Make Playoffs: ' + projected_points + ' / ' + make_playoffs
-        #next_game_str += '\nWin Cup Rank / Win Cup %:     ' + win_cup_rank + ' / ' + win_cup + '`'
+        projected_points, make_playoffs, make_final, win_cup, win_cup_rank = self.stats_projection(
+        )
+        next_game_str += '\n`\nEDM Stats Projection (fivethirtyeight.com)'
+        next_game_str += '\nProj. Points / Make Playoffs: ' + projected_points + ' / ' + make_playoffs
+        next_game_str += '\nWin Cup Rank / Win Cup %:     ' + win_cup_rank + ' / ' + win_cup + '`'
 
         # Playoffs
-        round1, round2, round3, cup = self.playoffs_money_puck()
-        next_game_str += '\n`\nEDM Odds Projection (moneypuck.com)'
-        next_game_str += f'\nWin Round 1: {float(round1)*100:.1f}% | Win Round 2: {float(round2)*100:.1f}%'
-        next_game_str += f'\nWin Conference: {float(round3)*100:.1f}% | Win Cup: {float(cup)*100:.1f}%`'
+        #round1, round2, round3, cup = self.playoffs_money_puck()
+        #next_game_str += '\n`\nEDM Odds Projection (moneypuck.com)'
+        #next_game_str += f'\nWin Round 1: {float(round1)*100:.1f}% | Win Round 2: {float(round2)*100:.1f}%'
+        #next_game_str += f'\nWin Conference: {float(round3)*100:.1f}% | Win Cup: {float(cup)*100:.1f}%`'
         return next_game_str
 
     def print_game_info(self, game_id, title):
+        if "Preview" in title:
+            return None
         game = self.api_game(game_id)
         # Get headline.
-        if len(game['editorial']['preview']['items']) < 1:
-            return None
+        #if len(game['editorial']['preview']['items']) < 1:
+        #    return None
         # Needed since I potentially use recap in description.
         description = ''
         if len(game['media']['epg'][2]['items']) >= 1:
@@ -129,22 +143,33 @@ class OilersTracker:
                               description=description,
                               color=discord.Colour.orange())
 
-        # Get milestones.
-        if len(game['media']['milestones']
-               ) < 1:  #or len(game['media']['milestones']['items']) < 1:
-            # Need to check as milestones itself can be empty.
-            # No point in post if there are no milestones.
-            return None
-        for milestone in game['media']['milestones']['items']:
-            if milestone['type'] == 'GOAL' and len(milestone['highlight']) > 0:
-                highlight_name = '||' + milestone[
-                    'ordinalNum'] + '-' + milestone['periodTime'] + ': '
-                highlight_name += milestone['highlight']['title'] + '||'
-                embed.add_field(name=highlight_name,
-                                value="[Link](" +
-                                milestone['highlight']['playbacks'][3]['url'] +
-                                ')',
-                                inline=True)
+        # Get milestones. (Doesn't seem to get filled anymore)
+        # if len(game['media']['milestones']
+        #        ) < 1:  #or len(game['media']['milestones']['items']) < 1:
+        #     # Need to check as milestones itself can be empty.
+        #     # No point in post if there are no milestones.
+        #     return None
+        # for milestone in game['media']['milestones']['items']:
+        #     if milestone['type'] == 'GOAL' and len(milestone['highlight']) > 0:
+        #         highlight_name = '||' + milestone[
+        #             'ordinalNum'] + '-' + milestone['periodTime'] + ': '
+        #         highlight_name += milestone['highlight']['title'] + '||'
+        #         embed.add_field(name=highlight_name,
+        #                         value="[Link](" +
+        #                         milestone['highlight']['playbacks'][3]['url'] +
+        #                         ')',
+        #                         inline=True)
+
+        # Get Highlights
+        if len(game['highlights']['gameCenter']['items']) < 1:
+            # Return if no highlights.
+            return embed
+        for highlight in reversed(game['highlights']['gameCenter']['items']):
+            highlight_name = '||' + highlight['blurb'].split(': ')[-1] + '||'
+            embed.add_field(name=highlight_name,
+                            value="[Link](" +
+                            highlight['playbacks'][3]['url'] + ")",
+                            inline=True)
 
         # Get recap.
         if len(game['media']['epg'][2]['items']) < 1:

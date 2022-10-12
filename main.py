@@ -38,12 +38,12 @@ async def on_ready():
         db["ffxiv"] = {}
 
     # Start cheapshark continous tasks
-    cheapshark.start()
+    #cheapshark.start()
     # Start oiler tracker task.
     update_oilers.start()
     # Start ffxiv task.
-    update_ffxiv.start()
-    # Start leaderboard continous task.
+    #update_ffxiv.start()
+    # Start valorant leaderboard continous task.
     update_leaderboard.start()
 
 
@@ -220,8 +220,7 @@ async def update_ffxiv():
         maint_channel_id = db['ffxiv']['maintenance_channel_id']
         maint_channel = client.get_channel(maint_channel_id)
         await maint_channel.send(latest)
-        
-        
+
     # Generate stats.
     ffxiv = StatsFFXIV()
     names_id = ffxiv.get_names_and_id()
@@ -243,7 +242,6 @@ async def update_ffxiv():
         embed = discord.Embed(title="The Fellas")
         embed.set_image(url=ffxiv.group_photo_url)
         await embed_msg.edit(embed=embed)
-        
 
 
 keep_alive()
