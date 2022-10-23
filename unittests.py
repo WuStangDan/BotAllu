@@ -10,8 +10,8 @@ class TestBookclub(unittest.TestCase):
     self.assertEqual(type(bookclub.status_str('50')), str)
     self.assertEqual(type(bookclub.status_str('75')), str)
     self.assertEqual(type(bookclub.status_str('100')), str)
-    self.assertEqual(bookclub.status_str('99'), None)
-    self.assertEqual(bookclub.status_str('28'), None)
+    self.assertEqual(bookclub.status_str('99'), ':clock9:')
+    self.assertEqual(bookclub.status_str('28'), ':clock3:')
 
 if __name__ == '__main__':
     unittest.main()

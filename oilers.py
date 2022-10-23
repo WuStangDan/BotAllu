@@ -129,42 +129,25 @@ class OilersTracker:
 
     def print_game_info(self, game_id, title):
         if "Preview" in title:
-            return None
+            return None, False
         game = self.api_game(game_id)
-        # Get headline.
-        #if len(game['editorial']['preview']['items']) < 1:
-        #    return None
         # Needed since I potentially use recap in description.
         description = ''
-        if len(game['media']['epg'][2]['items']) >= 1:
+        if len(game['media']['epg'][3]['items']) >= 1:
             description = '||' + game['media']['epg'][3]['items'][0][
                 'title'] + '||'
         embed = discord.Embed(title=title,
                               description=description,
                               color=discord.Colour.orange())
 
-        # Get milestones. (Doesn't seem to get filled anymore)
-        # if len(game['media']['milestones']
-        #        ) < 1:  #or len(game['media']['milestones']['items']) < 1:
-        #     # Need to check as milestones itself can be empty.
-        #     # No point in post if there are no milestones.
-        #     return None
-        # for milestone in game['media']['milestones']['items']:
-        #     if milestone['type'] == 'GOAL' and len(milestone['highlight']) > 0:
-        #         highlight_name = '||' + milestone[
-        #             'ordinalNum'] + '-' + milestone['periodTime'] + ': '
-        #         highlight_name += milestone['highlight']['title'] + '||'
-        #         embed.add_field(name=highlight_name,
-        #                         value="[Link](" +
-        #                         milestone['highlight']['playbacks'][3]['url'] +
-        #                         ')',
-        #                         inline=True)
-
         # Get Highlights
-        if len(game['highlights']['gameCenter']['items']) < 1:
-            # Return if no highlights.
-            return embed
-        for highlight in reversed(game['highlights']['gameCenter']['items']):
+        highlight_order = []
+        for i in range(len(game['highlights']['gameCenter']['items'])):
+            id = int(game['highlights']['gameCenter']['items'][i]['id'])
+            highlight_order += [[id, i]]
+        for highlight_index in sorted(highlight_order):
+            highlight = game['highlights']['gameCenter']['items'][
+                highlight_index[1]]
             highlight_name = '||' + highlight['blurb'].split(': ')[-1] + '||'
             embed.add_field(name=highlight_name,
                             value="[Link](" +
@@ -173,7 +156,7 @@ class OilersTracker:
 
         # Get recap.
         if len(game['media']['epg'][2]['items']) < 1:
-            return embed
+            return embed, False
         if game['media']['epg'][2]['title'] == 'Extended Highlights':
             embed.add_field(
                 name=game['media']['epg'][2]['items'][0]['blurb'],
@@ -183,9 +166,10 @@ class OilersTracker:
                 inline=False)
             embed.add_field(name='Next Game',
                             value=self.print_next_game_time())
-            return embed
 
-    async def write_discord_msg(self, game_id, game_embed, channel):
+            return embed, True
+
+    async def write_discord_msg(self, game_id, game_embed, finished, channel):
         if game_embed == None:
             # Nothing to output.
             return
@@ -194,18 +178,25 @@ class OilersTracker:
             msg = await channel.send(embed=game_embed)
             self.replit_db[game_id] = msg.id
         else:
+            if self.replit_db[game_id] == 'finished':
+                # Message in final state, no more updates required.
+                return
             # Message exists, edit existing message.
             msg = await channel.fetch_message(self.replit_db[game_id])
             await msg.edit(embed=game_embed)
+            if finished is True:
+                self.replit_db[game_id] = 'finished'
 
     async def run(self, channel):
         # TODO Add proper error handling if no nextgameschedule.
         # Get prev game ID and attempt to output.
         prev_game_id, title = self.get_game_id_and_title(self.api_team_prev())
-        prev_embed = self.print_game_info(prev_game_id, title)
-        await self.write_discord_msg(prev_game_id, prev_embed, channel)
+        prev_embed, prev_finished = self.print_game_info(prev_game_id, title)
+        await self.write_discord_msg(prev_game_id, prev_embed, prev_finished,
+                                     channel)
 
         # Get next game ID and attemp to output.
         next_game_id, title = self.get_game_id_and_title(self.api_team_next())
-        next_embed = self.print_game_info(next_game_id, title)
-        await self.write_discord_msg(next_game_id, next_embed, channel)
+        next_embed, next_finished = self.print_game_info(next_game_id, title)
+        await self.write_discord_msg(next_game_id, next_embed, next_finished,
+                                     channel)

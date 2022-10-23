@@ -9,6 +9,7 @@ import cheapshark_deals
 from oilers import OilersTracker
 from ffxiv import StatsFFXIV, MaintenanceFFXIV
 import asyncio
+import datetime
 
 client = discord.Client()
 
@@ -172,7 +173,7 @@ async def update_leaderboard():
     channel_id = db["leaderboard_channel_id"]
     msg = await client.get_channel(channel_id).history(limit=1).flatten()
     msg = msg[0]
-    channel = client.get_channel(channel_id)
+    #channel = client.get_channel(channel_id)
     leaderboard = val.generate_leaderboard()
     if msg.author == client.user:
         await msg.edit(content=leaderboard)
@@ -192,8 +193,9 @@ async def cheapshark():
     await channel.send(deal)
 
 
-@tasks.loop(seconds=900)
+@tasks.loop(seconds=1800)
 async def update_oilers():
+    print('oilers start: ' + str(datetime.datetime.now()))
     if "oiler_games" not in db.keys():
         return
     if 'channel_id' not in db['oiler_games']:
@@ -202,6 +204,7 @@ async def update_oilers():
     channel = client.get_channel(channel_id)
     oiler_tracker = OilersTracker(db['oiler_games'])
     await oiler_tracker.run(channel)
+    print('oilers end: ' + str(datetime.datetime.now()))
 
 
 @tasks.loop(seconds=3600)
