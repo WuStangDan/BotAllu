@@ -43,7 +43,7 @@ async def on_ready():
         db["steam"] = {}
 
     # Start cheapshark continous tasks
-    #cheapshark.start()
+    cheapshark.start()
     # Start oiler tracker task.
     update_oilers.start()
     # Start ffxiv task.
@@ -195,8 +195,6 @@ async def update_leaderboard():
     msg_generator = client.get_channel(channel_id).history(limit=1)
     # Flatten generator output into list.
     msg = [i async for i in msg_generator]
-    print(msg[0])
-    #msg = await client.get_channel(channel_id).history(limit=1).flatten()
     msg = msg[0]
     #channel = client.get_channel(channel_id)
     leaderboard = val.generate_leaderboard()
@@ -270,6 +268,7 @@ async def update_ffxiv():
         embed = discord.Embed(title="The Fellas")
         embed.set_image(url=ffxiv.group_photo_url)
         await embed_msg.edit(embed=embed)
+
 
 @tasks.loop(seconds=86400)
 async def steam_purchases():

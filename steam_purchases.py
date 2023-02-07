@@ -6,7 +6,6 @@ import os
 class SteamPurchases:
     def __init__(self, db):
         self.api_key = os.environ['STEAM_API_KEY']
-        self.steam_id_temp = '76561197980293965'
         self.api_url = 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=' + self.api_key + '&include_appinfo=true&steamid='
         self.user_api_url = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=' + self.api_key + '&steamids='
         self.db = db

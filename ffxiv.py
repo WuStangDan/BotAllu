@@ -9,6 +9,7 @@ import io
 import os
 import asyncio
 
+
 class MaintenanceFFXIV:
     def __init__(self, db):
         self.api_url = 'https://lodestonenews.com/news/maintenance?locale=NA&limit=5'
@@ -47,7 +48,8 @@ class MaintenanceFFXIV:
             latest_all_world += ' to ' + end + ' MST`'
             return latest_all_world
         return None
-            
+
+
 class StatsFFXIV:
     def __init__(self):
         self.basu_name = "Basu Tew"
@@ -90,32 +92,34 @@ class StatsFFXIV:
                 else:
                     job_name = job['Name'].split('/')[0]
                 self.highest_job[name]['job'] = job_name.strip().title()
-                self.highest_job[name]['xp_bar'] = job['ExpLevel']/job['ExpLevelMax']
+                self.highest_job[name][
+                    'xp_bar'] = job['ExpLevel'] / job['ExpLevelMax']
 
     def generate_stats_table(self):
         # Create the output that will fill the discord message.
-        headers = ['','Highest Job','Level','XP Bar']
+        headers = ['', 'Highest Job', 'Level', 'XP Bar']
         table = []
         for name, info in self.highest_job.items():
             row = [name]
             row += [info['job']]
             row += [info['level']]
-            xp_bar = '|' + '█' * int(info['xp_bar']*10)
+            xp_bar = '|' + '█' * int(info['xp_bar'] * 10)
             xp_bar = xp_bar.ljust(11) + '|'
             row += [xp_bar]
 
             table += [row]
-        
+
         # Sort by level, descending.
         table.sort(reverse=True, key=lambda x: (x[2], x[3], x[0]))
         self.table = table
 
-        message = tabulate(table, headers=headers, colalign=("left","right","right","right"))
+        message = tabulate(table,
+                           headers=headers,
+                           colalign=("left", "right", "right", "right"))
         # Ticks required for discord fixed width.
         return '`' + message + '`'
 
-
-    def image_to_byte_array(self, image:Image):
+    def image_to_byte_array(self, image: Image):
         # Converts PIL Image into byte array.
         imgByteArr = io.BytesIO()
         image.save(imgByteArr, format='JPEG')
@@ -125,7 +129,7 @@ class StatsFFXIV:
     async def upload_group_photo(self):
         images_in_row = 4
         num_rows = math.ceil(len(self.photos) / images_in_row)
-        group_photo = Image.new('RGB', (424*images_in_row, 493*num_rows))
+        group_photo = Image.new('RGB', (424 * images_in_row, 493 * num_rows))
         photos = []
 
         for row in self.table:
@@ -137,19 +141,24 @@ class StatsFFXIV:
             photos[-1] = photos[-1].crop((108, 46, 532, 539))
             # Sleep to not overload lodgestone rate limit.
             await asyncio.sleep(2)
-        
+
         # Combine photos.
         for c in range(num_rows):
             for r in range(images_in_row):
                 if len(photos) == 0:
                     break
-                group_photo.paste(photos.pop(0), (424*r, 493*c))
+                group_photo.paste(photos.pop(0), (424 * r, 493 * c))
 
         imgur_url = "https://api.imgur.com/3/image"
-        
+
         payload = {"image": self.image_to_byte_array(group_photo)}
-        headers = {'Authorization': 'Client-ID ' + os.environ['IMGUR_CLIENT_ID']}
-        
-        response = requests.request("POST", imgur_url, headers=headers, data=payload, files=[])
+        headers = {
+            'Authorization': 'Client-ID ' + os.environ['IMGUR_CLIENT_ID']
+        }
+
+        response = requests.request("POST",
+                                    imgur_url,
+                                    headers=headers,
+                                    data=payload,
+                                    files=[])
         self.group_photo_url = json.loads(response.text)['data']['link']
-        

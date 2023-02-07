@@ -3,7 +3,6 @@ import json
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 import discord
-#import pdb
 
 
 class OilersTracker:
