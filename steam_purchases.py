@@ -27,7 +27,12 @@ class SteamPurchases:
         for game in games_list:
             steam_id_games['games'][str(game['appid'])] = game['name']
         self.db[steam_id] = steam_id_games
-        return profile['personaname'] + ' has been added to purchase tracker.'
+        # Return all users currently being tracked.
+        output_msg = '`Currently tracking purchases for:\n'
+        for id in self.db:
+            output_msg += self.db[id]['name'] + '\n'
+        output_msg += '`'
+        return output_msg
 
     def get_games_list(self, steam_id):
         response = requests.get(self.api_url + steam_id)

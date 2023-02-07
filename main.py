@@ -12,7 +12,9 @@ from steam_purchases import SteamPurchases
 import asyncio
 import datetime
 
-client = discord.Client(intents=discord.Intents.default())
+intents = discord.Intents(messages=True, guilds=True)
+intents.message_content = True
+client = discord.Client(intents=intents)
 
 
 @client.event
@@ -172,11 +174,12 @@ async def on_message(message):
         await message.channel.send(embed=image_embed)
 
     ###
-    # STEAM PURCHASES
+    # Steam Purchases
     ###
     if message.content.startswith('!BotAllu steam purchases set'):
         db['steam']['channel_id'] = message.channel.id
         await message.channel.send('Steam purchases set here.')
+        return
     if message.content.startswith('!BotAllu purchases add '):
         check_steam_purchases = SteamPurchases(db["steam"]["steamids"])
         steam_id = str(message.content).split(' ')
@@ -184,7 +187,19 @@ async def on_message(message):
             await message.channel.send('You dun goofed something')
             return
         status = check_steam_purchases.add_steam_id(steam_id[-1])
-        await message.channel.send(status)
+        if 'message_id' not in db['steam']:
+            # Post new message and delete users.
+            message_id = await message.channel.send(status)
+            db['steam']['message_id'] = message_id.id
+            await message.delete()
+        else:
+            # Delete previous tracking list and users message, and post updated list.
+            channel = client.get_channel(db['steam']['channel_id'])
+            msg = await channel.fetch_message(db['steam']['message_id'])
+            message_id = await message.channel.send(status)
+            db['steam']['message_id'] = message_id.id
+            await message.delete()
+            await msg.delete()
 
 
 @tasks.loop(seconds=4000)
