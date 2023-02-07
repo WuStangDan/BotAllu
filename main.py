@@ -8,10 +8,11 @@ import bookclub
 import cheapshark_deals
 from oilers import OilersTracker
 from ffxiv import StatsFFXIV, MaintenanceFFXIV
+from steam_purchases import SteamPurchases
 import asyncio
 import datetime
 
-client = discord.Client()
+client = discord.Client(intents=discord.Intents.default())
 
 
 @client.event
@@ -38,6 +39,9 @@ async def on_ready():
     if "ffxiv" not in db.keys():
         db["ffxiv"] = {}
 
+    if "steam" not in db.keys():
+        db["steam"] = {}
+
     # Start cheapshark continous tasks
     #cheapshark.start()
     # Start oiler tracker task.
@@ -46,6 +50,8 @@ async def on_ready():
     #update_ffxiv.start()
     # Start valorant leaderboard continous task.
     update_leaderboard.start()
+    # Check for Steam Purchases.
+    steam_purchases.start()
 
 
 @client.event
@@ -165,13 +171,32 @@ async def on_message(message):
         image_embed.set_image(url='https://i.imgur.com/O7Bm19c.png')
         await message.channel.send(embed=image_embed)
 
+    ###
+    # STEAM PURCHASES
+    ###
+    if message.content.startswith('!BotAllu steam purchases set'):
+        db['steam']['channel_id'] = message.channel.id
+        await message.channel.send('Steam purchases set here.')
+    if message.content.startswith('!BotAllu purchases add '):
+        check_steam_purchases = SteamPurchases(db["steam"]["steamids"])
+        steam_id = str(message.content).split(' ')
+        if len(steam_id) != 4:
+            await message.channel.send('You dun goofed something')
+            return
+        status = check_steam_purchases.add_steam_id(steam_id[-1])
+        await message.channel.send(status)
+
 
 @tasks.loop(seconds=4000)
 async def update_leaderboard():
     if "leaderboard_channel_id" not in db.keys():
         return
     channel_id = db["leaderboard_channel_id"]
-    msg = await client.get_channel(channel_id).history(limit=1).flatten()
+    msg_generator = client.get_channel(channel_id).history(limit=1)
+    # Flatten generator output into list.
+    msg = [i async for i in msg_generator]
+    print(msg[0])
+    #msg = await client.get_channel(channel_id).history(limit=1).flatten()
     msg = msg[0]
     #channel = client.get_channel(channel_id)
     leaderboard = val.generate_leaderboard()
@@ -195,7 +220,7 @@ async def cheapshark():
 
 @tasks.loop(seconds=1800)
 async def update_oilers():
-    print('oilers start: ' + str(datetime.datetime.now()))
+    #print('oilers start: ' + str(datetime.datetime.now()))
     if "oiler_games" not in db.keys():
         return
     if 'channel_id' not in db['oiler_games']:
@@ -204,7 +229,7 @@ async def update_oilers():
     channel = client.get_channel(channel_id)
     oiler_tracker = OilersTracker(db['oiler_games'])
     await oiler_tracker.run(channel)
-    print('oilers end: ' + str(datetime.datetime.now()))
+    #print('oilers end: ' + str(datetime.datetime.now()))
 
 
 @tasks.loop(seconds=3600)
@@ -245,6 +270,23 @@ async def update_ffxiv():
         embed = discord.Embed(title="The Fellas")
         embed.set_image(url=ffxiv.group_photo_url)
         await embed_msg.edit(embed=embed)
+
+@tasks.loop(seconds=86400)
+async def steam_purchases():
+    if "steam" not in db.keys():
+        return
+    if "channel_id" not in db["steam"]:
+        return
+    if "steamids" not in db["steam"]:
+        db["steam"]["steamids"] = {}
+    channel_id = db["steam"]["channel_id"]
+    channel = client.get_channel(channel_id)
+    check_steam_purchases = SteamPurchases(db["steam"]["steamids"])
+    purchases = check_steam_purchases.run()
+    if len(purchases) == 0:
+        return
+    for purchase in purchases:
+        await channel.send('`' + purchase + '`')
 
 
 keep_alive()

@@ -1,19 +1,17 @@
 [tool.poetry]
-name = "repl_python3_BotAllu"
+name = "botallu"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["wustangdan <<>>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
 discord = "^1.7.3"
-tasks = "^2.8.0"
-replit = "^3.2.4"
-tabulate = "^0.8.9"
-Flask = "^2.0.1"
-bs4 = "^0.0.1"
-black = "^22.3.0"
-pytz = "^2022.1"
+tabulate = "^0.9.0"
+beautifulsoup4 = "^4.11.1"
+pytz = "^2022.7.1"
+Flask = "^2.2.2"
+replit = "^3.2.5"
 
 [tool.poetry.dev-dependencies]
 
