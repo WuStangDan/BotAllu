@@ -6,8 +6,9 @@ import os
 class SteamPurchases:
     def __init__(self, db):
         self.api_key = os.environ['STEAM_API_KEY']
-        self.api_url = 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=' + self.api_key + '&include_appinfo=true&steamid='
+        self.api_url = 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=' + self.api_key + '&include_appinfo=true&skip_unvetted_apps=false&include_played_free_games=true&steamid='
         self.user_api_url = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=' + self.api_key + '&steamids='
+        self.steam_store_url = 'https://store.steampowered.com/app/'
         self.db = db
 
     def get_steam_profile(self, steam_id):
@@ -42,22 +43,26 @@ class SteamPurchases:
 
     def get_new_purchases(self, steam_id):
         output = ''
+        first_game_link = ''
         games_list = self.get_games_list(steam_id)
         if len(games_list) == len(self.db[steam_id]['games']):
-            return output
+            return output, first_game_link
         for game in games_list:
             if str(game['appid']) not in self.db[steam_id]['games']:
                 # Add space to separate games and steam name.
                 output += ' - ' + game['name']
+                if first_game_link == '':
+                    # Add link to first game.
+                    first_game_link = self.steam_store_url + str(game['appid'])
                 # Append game to games list.
                 self.db[steam_id]['games'][str(game['appid'])] = game['name']
-        return output
+        return output, first_game_link
 
     def run(self):
         output = []
         for id in self.db:
-            purchase = self.get_new_purchases(id)
+            purchase, link = self.get_new_purchases(id)
             if purchase == '':
                 continue
-            output += [self.db[id]['name'] + purchase]
+            output += ['`' + self.db[id]['name'] + purchase + '`\n' + link]
         return output

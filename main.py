@@ -300,7 +300,7 @@ async def steam_purchases():
     if len(purchases) == 0:
         return
     for purchase in purchases:
-        await channel.send('`' + purchase + '`')
+        await channel.send(purchase)
 
 
 keep_alive()
