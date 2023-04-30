@@ -66,3 +66,38 @@ class SteamPurchases:
                 continue
             output += ['`' + self.db[id]['name'] + purchase + '`\n' + link]
         return output
+
+
+class SteamPlaytime:
+    def __init__(self, db):
+        self.db = db
+        self.api_key = os.environ['STEAM_API_KEY']
+        self.api_url = 'https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=' + self.api_key + '&steamid='
+
+    def get_2week_playtime(self, steam_id):
+        print(self.api_url + steam_id)
+        response = requests.get(self.api_url + steam_id)
+        response = json.loads(response.text)
+        response = response['response']
+        if 'total_count' not in response:
+            # If people don't have profile public.
+            return []
+        if response['total_count'] == 0:
+            return []
+        return response['games']
+
+    def run(self):
+        output = '`'
+        temp_db = {}
+        for steam_id in self.db:
+            games = self.get_2week_playtime(steam_id)
+            for game in games:
+                if 'name' not in game:
+                    # Some app ids are not public. Skip these.
+                    continue
+                if game['name'] in temp_db:
+                    temp_db[game['name']] += game['playtime_2weeks']
+                else:
+                    temp_db[game['name']] = game['playtime_2weeks']
+        print(temp_db)
+        return output
