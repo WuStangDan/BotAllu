@@ -7,7 +7,7 @@ from flask_server import keep_alive
 import bookclub
 import cheapshark_deals
 from oilers import OilersTracker
-from ffxiv import StatsFFXIV, MaintenanceFFXIV
+#from ffxiv import StatsFFXIV, MaintenanceFFXIV
 from steam_purchases import SteamPurchases
 import asyncio
 import datetime
@@ -51,7 +51,7 @@ async def on_ready():
     # Start ffxiv task.
     #update_ffxiv.start()
     # Start valorant leaderboard continous task.
-    update_leaderboard.start()
+    #update_leaderboard.start()
     # Check for Steam Purchases.
     steam_purchases.start()
 
