@@ -7,6 +7,7 @@ from flask_server import keep_alive
 import bookclub
 import cheapshark_deals
 from oilers import OilersTracker
+from dawncraft import McServer
 
 # from ffxiv import StatsFFXIV, MaintenanceFFXIV
 from steam_purchases import SteamPurchases
@@ -45,6 +46,9 @@ async def on_ready():
     if "steam" not in db.keys():
         db["steam"] = {}
 
+    if "mcstatus" not in db.keys():
+        db["mcstatus"] = {}
+
     # Start cheapshark continous tasks
     cheapshark.start()
     # Start oiler tracker task.
@@ -55,6 +59,7 @@ async def on_ready():
     # update_leaderboard.start()
     # Check for Steam Purchases.
     steam_purchases.start()
+    mcstatus.start()
 
 
 @client.event
@@ -204,6 +209,12 @@ async def on_message(message):
             await message.delete()
             await msg.delete()
 
+    ###
+    # Minecraft
+    ###
+    if message.content.startswith("!BotAllu mcstatus set"):
+        db["mcstatus"]["channel_id"] = message.channel.id
+        await message.channel.send("MC Status set here.")
 
 @tasks.loop(seconds=4000)
 async def update_leaderboard():
@@ -304,6 +315,17 @@ async def steam_purchases():
         return
     for purchase in purchases:
         await channel.send(purchase)
+
+@tasks.loop(seconds=3600)
+async def mcstatus():
+    if "mcstatus" not in db.keys():
+        return
+    if "channel_id" not in db["mcstatus"]:
+        return
+    server = McServer()
+    channel_name = server.get_status()
+    mc_channel = client.get_channel(db["mcstatus"]["channel_id"])
+    await mc_channel.edit(name=channel_name)
 
 
 keep_alive()

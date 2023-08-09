@@ -100,6 +100,17 @@ html5lib = ["html5lib"]
 lxml = ["lxml"]
 
 [[package]]
+name = "bs4"
+version = "0.0.1"
+description = "Dummy package for Beautiful Soup"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+beautifulsoup4 = "*"
+
+[[package]]
 name = "certifi"
 version = "2022.12.7"
 description = "Python package for providing Mozilla's CA Bundle."
@@ -310,6 +321,18 @@ build_docs = ["sphinx (>=1.6)", "sphinxcontrib-fulltoc (>=1.2.0)", "cloud-spthem
 totp = ["cryptography"]
 
 [[package]]
+name = "pillow"
+version = "10.0.0"
+description = "Python Imaging Library (Fork)"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.extras]
+docs = ["furo", "olefile", "sphinx (>=2.4)", "sphinx-copybutton", "sphinx-inline-tabs", "sphinx-removed-in", "sphinxext-opengraph"]
+tests = ["check-manifest", "coverage", "defusedxml", "markdown2", "olefile", "packaging", "pyroma", "pytest", "pytest-cov", "pytest-timeout"]
+
+[[package]]
 name = "protobuf"
 version = "4.21.12"
 description = ""
@@ -474,7 +497,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "5ce7e17cd5c9ad8be3293d0deceb3c6526e687d3827e0f1c48032ca9a54b7cdd"
+content-hash = "e5599c1afd3efa4783a6d2838cfb6fa3bb7c51a499b142675948d3c2c22d5a5a"
 
 [metadata.files]
 aiohttp = []
@@ -484,6 +507,7 @@ argon2-cffi-bindings = []
 async-timeout = []
 attrs = []
 beautifulsoup4 = []
+bs4 = []
 certifi = []
 cffi = []
 charset-normalizer = []
@@ -502,6 +526,7 @@ jinja2 = []
 markupsafe = []
 multidict = []
 passlib = []
+pillow = []
 protobuf = []
 pycparser = []
 pycryptodomex = []
