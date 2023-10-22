@@ -13,11 +13,12 @@ class McServer:
         return_str = ''
         if response['online']:
             return_str += '🌳'
+            if 'players' in response:
+                players = response['players']['online']
+                if players > 0:
+                    return_str += '_' + str(players) + '_'
         else:
             return_str += '🛑'
-        players = response['players']['online']
-        if players > 0:
-            return_str += '_' + str(players) + '_'
+
         return_str += 'minecraft'
         return return_str
-        

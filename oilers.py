@@ -44,7 +44,7 @@ class OilersTracker:
         return row.split(",")[4:8]
 
     def get_game_id_and_title(self, api):
-        in_playoffs = True
+        in_playoffs = False
         game_found = False
         if "previousGameSchedule" in api["teams"][0]:
             info = api["teams"][0]["previousGameSchedule"]["dates"][0]["games"][0]
@@ -117,7 +117,7 @@ class OilersTracker:
         return projected_points, make_playoffs, make_final, win_cup, win_cup_rank
 
     def print_next_game_time(self):
-        in_playoffs = True
+        in_playoffs = False
         oilers_next = self.api_team_next()
         oilers_next = oilers_next["teams"][0]
         next_game_str = ""
@@ -204,7 +204,7 @@ class OilersTracker:
             return embed, True
 
     async def write_discord_msg(self, game_id, game_embed, finished, channel):
-        in_playoffs = True
+        in_playoffs = False
         if game_embed == None:
             # Nothing to output.
             return

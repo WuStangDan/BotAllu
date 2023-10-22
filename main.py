@@ -316,7 +316,7 @@ async def steam_purchases():
     for purchase in purchases:
         await channel.send(purchase)
 
-@tasks.loop(seconds=3600)
+@tasks.loop(seconds=1800)
 async def mcstatus():
     if "mcstatus" not in db.keys():
         return
