@@ -72,7 +72,7 @@ async def on_message(message):
     # Repeat
     ###
     if message.content.startswith("!BotAllu repeat "):
-        if message.author.name != "Ender" or message.author.discriminator != "8157":
+        if message.author.name != "ender_14":
             print("Repeat by:")
             print(message.author)
             print("failed.")
@@ -299,7 +299,7 @@ async def update_ffxiv():
         await embed_msg.edit(embed=embed)
 
 
-@tasks.loop(seconds=86400)
+@tasks.loop(seconds=7200)
 async def steam_purchases():
     if "steam" not in db.keys():
         return

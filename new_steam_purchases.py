@@ -4,8 +4,9 @@ import os
 import code
 
 
+
 class SteamPurchases:
-    def __init__(self, db):
+    def __init__(self):
         self.api_key = os.environ["STEAM_API_KEYY"]
         self.api_url = (
             "http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key="
@@ -18,8 +19,18 @@ class SteamPurchases:
             + "&steamids="
         )
         self.steam_store_url = "https://store.steampowered.com/app/"
-        self.db = db
+        
+        self.db_full = self.load_db()
+        self.db = self.db_full["steamids"]
 
+    def load_db(self):
+        with open("database/steampurchase.json", 'r') as file:
+            return json.load(file)
+
+    def save_db(self, db):
+        with open("database/steampurchase.json", 'w') as file:
+            json.dump(db, file)
+    
     def get_steam_profile(self, steam_id):
         #print("test this")
         #print(self.user_api_url + steam_id)
@@ -47,9 +58,9 @@ class SteamPurchases:
         return output_msg
 
     def get_games_list(self, steam_id):
-        #print("test this")
-        #print(self.user_api_url + steam_id)
-        #code.interact(local=locals())
+        # print("test this")
+        # print(self.user_api_url + steam_id)
+        # code.interact(local=locals())
         response = requests.get(self.api_url + steam_id)
         response = json.loads(response.text)
         response = response["response"]["games"]
@@ -79,6 +90,7 @@ class SteamPurchases:
             if purchase == "":
                 continue
             output += ["`" + self.db[id]["name"] + purchase + "`\n" + link]
+        self.save_db(self.db)
         return output
 
 
