@@ -3,7 +3,6 @@
     "name": "Ender",
     "games": {
       "4000": "Garry's Mod",
-      "12140": "Max Payne 2: The Fall of Max Payne",
       "17300": "Crysis",
       "22100": "Mount & Blade",
       "17470": "Dead Space (2008)",
@@ -294,7 +293,8 @@
       "1128810": "RISK: Global Domination",
       "553850": "HELLDIVERS\u2122 2",
       "2477340": "Expeditions: A MudRunner Game",
-      "12150": "Max Payne 2: The Fall of Max Payne"
+      "12150": "Max Payne 2: The Fall of Max Payne",
+      "12140": "Max Payne"
     }
   },
   "76561197979973944": {

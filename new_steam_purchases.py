@@ -4,10 +4,9 @@ import os
 import code
 
 
-
 class SteamPurchases:
-    def __init__(self):
-        self.api_key = os.environ["STEAM_API_KEYY"]
+    def __init__(self, steam_api_key):
+        self.api_key = steam_api_key
         self.api_url = (
             "http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key="
             + self.api_key
@@ -19,20 +18,20 @@ class SteamPurchases:
             + "&steamids="
         )
         self.steam_store_url = "https://store.steampowered.com/app/"
-        
+
         self.db = self.load_db()
 
     def load_db(self):
-        with open("database/steampurchase.json", 'r') as file:
+        with open("database/steampurchases.json", "r") as file:
             return json.load(file)
 
     def save_db(self, db):
-        with open("database/steampurchase.json", 'w') as file:
+        with open("database/steampurchases.json", "w") as file:
             json.dump(db, file, indent=2)
-    
+
     def get_steam_profile(self, steam_id):
-        #print("test this")
-        #print(self.user_api_url + steam_id)
+        # print("test this")
+        # print(self.user_api_url + steam_id)
         response = requests.get(self.user_api_url + steam_id)
         response = json.loads(response.text)
         response = response["response"]["players"][0]
@@ -49,6 +48,14 @@ class SteamPurchases:
         for game in games_list:
             steam_id_games["games"][str(game["appid"])] = game["name"]
         self.db[steam_id] = steam_id_games
+        # Return all users currently being tracked.
+        output_msg = "`Currently tracking purchases for:\n"
+        for id in self.db:
+            output_msg += self.db[id]["name"] + "\n"
+        output_msg += "`"
+        return output_msg
+
+    def get_current_users(self):
         # Return all users currently being tracked.
         output_msg = "`Currently tracking purchases for:\n"
         for id in self.db:

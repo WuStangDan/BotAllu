@@ -1,0 +1,3 @@
+[submodule "BotAlluPrivate"]
+	path = BotAlluPrivate
+	url = git@github.com:WuStangDan/BotAlluPrivate.git
