@@ -20,8 +20,7 @@ class SteamPurchases:
         )
         self.steam_store_url = "https://store.steampowered.com/app/"
         
-        self.db_full = self.load_db()
-        self.db = self.db_full["steamids"]
+        self.db = self.load_db()
 
     def load_db(self):
         with open("database/steampurchase.json", 'r') as file:
@@ -29,7 +28,7 @@ class SteamPurchases:
 
     def save_db(self, db):
         with open("database/steampurchase.json", 'w') as file:
-            json.dump(db, file)
+            json.dump(db, file, indent=2)
     
     def get_steam_profile(self, steam_id):
         #print("test this")

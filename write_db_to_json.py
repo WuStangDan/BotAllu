@@ -1,3 +1,6 @@
+import json
+from replit import db
+import replit
 def to_json(_dict):
     output = {}
     for key in _dict.keys():
@@ -7,4 +10,4 @@ def to_json(_dict):
             output[key] = str(_dict[key])
     return output
 with open("database_backup.json", "w") as file:
-  json.dump(to_json(db), file, indent=2)
+  json.dump(to_json(db["steam"]), file, indent=2)
