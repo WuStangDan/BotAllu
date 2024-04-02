@@ -2,6 +2,7 @@ import json
 import discord
 from discord.ext import tasks
 from steam_purchases import SteamPurchases
+from steam_playtime import SteamPlaytime
 
 # Load Secrets
 SECRETS = {}
@@ -57,9 +58,21 @@ async def hello(ctx):
     description="List current steam users who's purchases are tracked",
 )
 async def steam_purchase_users(ctx):
+    await ctx.defer()
     steam_purchases = SteamPurchases()
     output = steam_purchases.get_current_users()
-    await ctx.respond(f"{output}")
+    await ctx.followup.send(f"{output}")
+
+
+@client.slash_command(
+    name="steamtwoweeksplaytime",
+    description="List 2 week playtime of games played by multiple memers",
+)
+async def steam_two_weeks_playtime(ctx):
+    await ctx.defer()
+    steam_playtime = SteamPlaytime()
+    output = steam_playtime.run()
+    await ctx.followup.send(f"{output}")
 
 
 client.run(SECRETS["DISCORD_TOKEN"])
