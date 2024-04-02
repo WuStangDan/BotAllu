@@ -1,7 +1,7 @@
 import json
 import discord
 from discord.ext import tasks
-from new_steam_purchases import SteamPurchases
+from steam_purchases import SteamPurchases
 
 # Load Secrets
 SECRETS = {}
@@ -32,7 +32,7 @@ class MyClient(discord.Bot):
     async def my_background_task(self):
         channel = self.get_channel(CHANNEL_IDS["steam"])  # Your Channel ID goes here
         self.counter += 1
-        check_purchases = SteamPurchases(SECRETS["STEAM_API_KEY"])
+        check_purchases = SteamPurchases()
         purchases = check_purchases.run()
         if len(purchases) == 0:
             return
@@ -57,9 +57,8 @@ async def hello(ctx):
     description="List current steam users who's purchases are tracked",
 )
 async def steam_purchase_users(ctx):
-    steam_purchases = SteamPurchases(SECRETS["STEAM_API_KEY"])
+    steam_purchases = SteamPurchases()
     output = steam_purchases.get_current_users()
-
     await ctx.respond(f"{output}")
 
 
