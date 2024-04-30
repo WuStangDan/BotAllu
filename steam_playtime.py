@@ -48,11 +48,6 @@ class SteamPlaytime(SteamPurchases):
     def __init__(self):
         super().__init__()
         self.purchase_db = self.load_db()
-        self.playtime_db = self.load_time_db()
-
-    def load_time_db(self):
-        with open("database/steamtimedaily.json", "r") as file:
-            return json.load(file)
 
     def get_2week_playtime(self, steam_id):
         response = requests.get(self.api_url + steam_id)

@@ -2,12 +2,7 @@
   "76561197980293965": {
     "name": "Ender",
     "gmw": {
-      "779340": 300,
-      "1066890": 300,
-      "975370": 585,
-      "2477340": 599.85,
-      "288160": 14.85,
-      "2741560": 29.85
+      "779340": 300
     },
     "games": {
       "4000": "Garry's Mod",
@@ -100,6 +95,7 @@
       "223750": "DCS World Steam Edition",
       "224260": "No More Room in Hell",
       "224820": "Super House of Dead Ninjas",
+      "107410": "Arma 3",
       "227680": "StarForge",
       "230330": "FINAL FANTASY\u00ae XI: Ultimate Collection Seekers Edition NA",
       "210770": "Sanctum 2",
@@ -313,22 +309,15 @@
       "2229880": "Command & Conquer\u2122 Tiberian Sun\u2122 and Firestorm\u2122",
       "2229890": "Command & Conquer\u2122: Renegade",
       "916440": "Anno 1800",
+      "2732960": "Command & Conquer\u2122 Generals Zero Hour",
       "1326470": "Sons Of The Forest",
       "2881650": "Content Warning",
-      "779340": "Total War: THREE KINGDOMS",
-      "107410": "Arma 3",
-      "2732960": "Command & Conquer\u2122 Generals Zero Hour",
-      "288160": "The Room",
-      "767390": "Dakar 18",
-      "2741560": "Sim City 3000\u2122 Unlimited"
+      "779340": "Total War: THREE KINGDOMS"
     }
   },
   "76561197979973944": {
     "name": "heydingus",
-    "gmw": {
-      "2881650": 1,
-      "638230": 50
-    },
+    "gmw": {},
     "games": {
       "240": "Counter-Strike: Source",
       "300": "Day of Defeat: Source",
@@ -530,8 +519,7 @@
       "553850": "HELLDIVERS\u2122 2",
       "383180": "Dead Island Riptide Definitive Edition",
       "2743030": "LISA: The First",
-      "2881650": "Content Warning",
-      "638230": "Journey"
+      "2881650": "Content Warning"
     }
   },
   "76561198081061131": {
@@ -803,9 +791,7 @@
       "764790": "The Messenger",
       "1868140": "DAVE THE DIVER",
       "1382070": "Viewfinder",
-      "1574580": "Strange Horticulture",
-      "1223500": "Umurangi Generation",
-      "1562430": "DREDGE"
+      "1574580": "Strange Horticulture"
     }
   },
   "76561198038176996": {
@@ -1227,9 +1213,7 @@
   },
   "76561198807270844": {
     "name": "Gagz",
-    "gmw": {
-      "304930": 1
-    },
+    "gmw": {},
     "games": {
       "3830": "Psychonauts",
       "110800": "L.A. Noire",
@@ -1290,15 +1274,12 @@
       "671860": "BattleBit Remastered",
       "1966720": "Lethal Company",
       "1172470": "Apex Legends",
-      "553850": "HELLDIVERS\u2122 2",
-      "304930": "Unturned"
+      "553850": "HELLDIVERS\u2122 2"
     }
   },
   "76561198029215192": {
     "name": "BBE's Moustache",
-    "gmw": {
-      "2881650": 1
-    },
+    "gmw": {},
     "games": {
       "38400": "Fallout",
       "8980": "Borderlands GOTY",
@@ -1581,10 +1562,7 @@
       "383180": "Dead Island Riptide Definitive Edition",
       "1203620": "Enshrouded",
       "2321470": "Deep Rock Galactic: Survivor",
-      "774801": "Crab Champions",
-      "1625450": "Muck",
-      "1621690": "Core Keeper",
-      "2658710": "Tinkerlands: A Shipwrecked Adventure"
+      "774801": "Crab Champions"
     }
   },
   "76561198101209955": {
@@ -2206,15 +2184,12 @@
       "1158310": "Crusader Kings III",
       "1326470": "Sons Of The Forest",
       "1562430": "DREDGE",
-      "1086940": "Baldur's Gate 3",
-      "2379780": "Balatro"
+      "1086940": "Baldur's Gate 3"
     }
   },
   "76561197965811301": {
     "name": "SimpleWater",
-    "gmw": {
-      "244210": 299.84999999999997
-    },
+    "gmw": {},
     "games": {
       "10": "Counter-Strike",
       "20": "Team Fortress Classic",
@@ -2489,8 +2464,7 @@
       "39140": "FINAL FANTASY VII",
       "553850": "HELLDIVERS\u2122 2",
       "383180": "Dead Island Riptide Definitive Edition",
-      "2743030": "LISA: The First",
-      "244210": "Assetto Corsa"
+      "2743030": "LISA: The First"
     }
   },
   "76561198140388623": {

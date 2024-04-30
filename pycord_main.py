@@ -35,10 +35,11 @@ class MyClient(discord.Bot):
         self.counter += 1
         check_purchases = SteamPurchases()
         purchases = check_purchases.run()
-        if len(purchases) == 0:
-            return
         for purchase in purchases:
             await channel.send(purchase)
+
+        if check_purchases.gmw_output != "":
+            await channel.send(check_purchases.gmw_output)
 
 
 client = MyClient()
@@ -46,9 +47,6 @@ client = MyClient()
 
 @client.slash_command(name="hello", description="Say hello to the bot")
 async def hello(ctx):
-    print(client.counter)
-    client.counter += 1
-    print(client.counter)
     name = ctx.author.name
     await ctx.respond(f"Hello {name}!")
 
@@ -72,6 +70,17 @@ async def steam_two_weeks_playtime(ctx):
     await ctx.defer()
     steam_playtime = SteamPlaytime()
     output = steam_playtime.run()
+    await ctx.followup.send(f"{output}")
+
+
+@client.slash_command(
+    name="dgmw",
+    description="List games that people dgmw",
+)
+async def steam_dgmw(ctx):
+    await ctx.defer()
+    steam_purchases = SteamPurchases()
+    output = steam_purchases.print_dgmw()
     await ctx.followup.send(f"{output}")
 
 

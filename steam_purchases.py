@@ -2,6 +2,8 @@ import requests
 import json
 import os
 import code
+import datetime
+import time
 
 
 def get_steam_api_key():
@@ -26,7 +28,11 @@ class SteamPurchases:
         )
         self.steam_store_url = "https://store.steampowered.com/app/"
 
+        self.steam_price_api = "https://store.steampowered.com/api/appdetails?filters=price_overview&appids="
+
         self.db = self.load_db()
+
+        self.gmw_output = ""
 
     def load_db(self):
         with open("database/steampurchases.json", "r") as file:
@@ -51,6 +57,7 @@ class SteamPurchases:
         steam_id_games = {}
         steam_id_games["name"] = profile["personaname"]
         steam_id_games["games"] = {}
+        steam_id_games["gmw"] = {}
         games_list = self.get_games_list(steam_id)
         for game in games_list:
             steam_id_games["games"][str(game["appid"])] = game["name"]
@@ -72,19 +79,106 @@ class SteamPurchases:
 
     def get_games_list(self, steam_id):
         # print("test this")
-        # print(self.user_api_url + steam_id)
+        # print(self.api_url + steam_id)
         # code.interact(local=locals())
-        response = requests.get(self.api_url + steam_id)
-        response = json.loads(response.text)
+        response_full = requests.get(self.api_url + steam_id)
+        response = json.loads(response_full.text)
+        if "games" not in response["response"]:
+            # Log Error
+            with open("database/error.txt", mode="a") as file:
+                file.write(
+                    self.db[steam_id]["name"]
+                    + "-"
+                    + steam_id
+                    + "-"
+                    + str(response_full)
+                    + "no games - recorded at %s.\n" % (datetime.datetime.now())
+                )
+            return []
+
         response = response["response"]["games"]
         return response
+
+    def get_gmw_minutes(self, app_id):
+        response_full = requests.get(self.steam_price_api + str(app_id))
+        response = json.loads(response_full.text)
+        # 100 to dollars, $4 per hour, 60 minutes.
+        if len(response[str(app_id)]["data"]) == 0:
+            return 1
+        gmw_minutes = (
+            response[str(app_id)]["data"]["price_overview"]["final"] / 100 / 4 * 60
+        )
+        return gmw_minutes
+
+    def get_matching_game(self, games_list, appid):
+        for game in games_list:
+            if str(appid) == str(game["appid"]):
+                return game
+        return None
+
+    def check_gmw(self, steam_id, games_list):
+        delete_app_ids = []
+        for appid in self.db[steam_id]["gmw"]:
+            game = self.get_matching_game(games_list, appid)
+            if game is None:
+                continue
+            # Found matching game in list.
+            gmw_min = self.db[steam_id]["gmw"][appid]
+            if gmw_min < game["playtime_forever"]:
+                self.gmw_output += (
+                    ":white_check_mark: "
+                    + self.db[steam_id]["name"]
+                    + " GMW in "
+                    + game["name"]
+                    + " "
+                    + "`Paid $"
+                    + str(round(gmw_min / 60 * 4))
+                    + " with "
+                    + str(round(game["playtime_forever"] / 60, 1))
+                    + " hrs` \n"
+                )
+
+                # Remove from gmw db.
+                delete_app_ids += [appid]
+        for app_ids in delete_app_ids:
+            del self.db[steam_id]["gmw"][app_ids]
+
+    def print_dgmw(self):
+        output = ""
+        for steam_id in self.db:
+            if len(self.db[steam_id]["gmw"]) == 0:
+                continue
+            games_list = self.get_games_list(steam_id)
+            for appid in self.db[steam_id]["gmw"]:
+                hours_left = self.db[steam_id]["gmw"][appid] / 60 
+                hours_in = 0
+                game = self.get_matching_game(games_list, appid)
+                hours_in = game["playtime_forever"] / 60
+                hours_left -= hours_in
+                output += (
+                    ":x: "
+                    + self.db[steam_id]["name"]
+                    + " DGMW in "
+                    + self.db[steam_id]["games"][appid]
+                    + " `Paid $"
+                    + str(round(self.db[steam_id]["gmw"][appid] / 60 * 4))
+                    + " need "
+                    + str(round(hours_left, 1))
+                    + " more hrs` \n"
+                )
+
+        return output
 
     def get_new_purchases(self, steam_id):
         output = ""
         first_game_link = ""
         games_list = self.get_games_list(steam_id)
-        if len(games_list) == len(self.db[steam_id]["games"]):
-            return output, first_game_link
+        # Check GMW
+        self.check_gmw(steam_id, games_list)
+
+        # causes bugs when some free games get removed.
+        #if len(games_list) == len(self.db[steam_id]["games"]):
+        #    return output, first_game_link
         for game in games_list:
             if str(game["appid"]) not in self.db[steam_id]["games"]:
                 # Add space to separate games and steam name.
@@ -94,6 +188,10 @@ class SteamPurchases:
                     first_game_link = self.steam_store_url + str(game["appid"])
                 # Append game to games list.
                 self.db[steam_id]["games"][str(game["appid"])] = game["name"]
+                # Append gmw minutes to gmw list.
+                self.db[steam_id]["gmw"][str(game["appid"])] = self.get_gmw_minutes(
+                    game["appid"]
+                )
         return output, first_game_link
 
     def run_debug(self):
@@ -108,6 +206,7 @@ class SteamPurchases:
     def run(self):
         output = []
         for steam_id in self.db:
+            time.sleep(3)
             purchase, link = self.get_new_purchases(steam_id)
             if purchase == "":
                 continue
