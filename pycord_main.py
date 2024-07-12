@@ -81,7 +81,14 @@ async def steam_dgmw(ctx):
     await ctx.defer()
     steam_purchases = SteamPurchases()
     output = steam_purchases.print_dgmw()
-    await ctx.followup.send(f"{output}")
+    if len(output) > 1990:
+        loc = output[:1990].rfind(":x:")
+        await ctx.followup.send(f"{output[:loc]}")
+        await ctx.followup.send(f"{output[loc:3800]}")
+        if len(output) > 3800:
+            await ctx.followup.send(f"......")
+    else:
+        await ctx.followup.send(f"{output}")
 
 
 client.run(SECRETS["DISCORD_TOKEN"])

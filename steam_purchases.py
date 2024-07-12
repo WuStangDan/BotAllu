@@ -2,7 +2,7 @@ import requests
 import json
 import os
 import code
-import datetime
+from datetime import datetime, timedelta
 import time
 
 
@@ -33,6 +33,7 @@ class SteamPurchases:
         self.db = self.load_db()
 
         self.gmw_output = ""
+        self.game_playtime = {}
 
     def load_db(self):
         with open("database/steampurchases.json", "r") as file:
@@ -58,6 +59,7 @@ class SteamPurchases:
         steam_id_games["name"] = profile["personaname"]
         steam_id_games["games"] = {}
         steam_id_games["gmw"] = {}
+        steam_id_games["time"] = {}
         games_list = self.get_games_list(steam_id)
         for game in games_list:
             steam_id_games["games"][str(game["appid"])] = game["name"]
@@ -92,7 +94,7 @@ class SteamPurchases:
                     + steam_id
                     + "-"
                     + str(response_full)
-                    + "no games - recorded at %s.\n" % (datetime.datetime.now())
+                    + "no games - recorded at %s.\n" % (datetime.now())
                 )
             return []
 
@@ -104,7 +106,7 @@ class SteamPurchases:
         response = json.loads(response_full.text)
         # 100 to dollars, $4 per hour, 60 minutes.
         if len(response[str(app_id)]["data"]) == 0:
-            return 1
+            return 0
         gmw_minutes = (
             response[str(app_id)]["data"]["price_overview"]["final"] / 100 / 4 * 60
         )
@@ -121,10 +123,15 @@ class SteamPurchases:
         for appid in self.db[steam_id]["gmw"]:
             game = self.get_matching_game(games_list, appid)
             if game is None:
+                # Game is refunded. Delete and print.
+                delete_app_ids += [appid]
+                game_name = self.db[steam_id]["games"][appid]
+                del self.db[steam_id]["games"][appid]
+                self.gmw_output += ":coffin: " + self.db[steam_id]["name"] + " returned " + game_name + " \n"
                 continue
             # Found matching game in list.
             gmw_min = self.db[steam_id]["gmw"][appid]
-            if gmw_min < game["playtime_forever"]:
+            if gmw_min <= game["playtime_forever"]:
                 self.gmw_output += (
                     ":white_check_mark: "
                     + self.db[steam_id]["name"]
@@ -153,6 +160,9 @@ class SteamPurchases:
                 hours_left = self.db[steam_id]["gmw"][appid] / 60 
                 hours_in = 0
                 game = self.get_matching_game(games_list, appid)
+                if game is None:
+                    # Means game has been returned.
+                    continue
                 hours_in = game["playtime_forever"] / 60
                 hours_left -= hours_in
                 output += (
@@ -168,11 +178,27 @@ class SteamPurchases:
                 )
 
         return output
+    
+    def week_passed(self):
+        with open("database/prevtime.json", "r") as file:
+            prev_time_db = json.load(file)
+        prev_time = datetime.fromtimestamp(prev_time_db['prevtime'])
+
+        current_datetime = datetime.now()
+        time_diff = current_datetime - prev_time
+        one_week = timedelta(weeks=1)
+        if time_diff >= one_week:
+            return True
+        else:
+            return False
 
     def get_new_purchases(self, steam_id):
         output = ""
         first_game_link = ""
         games_list = self.get_games_list(steam_id)
+        # Check if ready for time update.
+        self.game_playtime[steam_id] = {}
+
         # Check GMW
         self.check_gmw(steam_id, games_list)
 
@@ -180,6 +206,7 @@ class SteamPurchases:
         #if len(games_list) == len(self.db[steam_id]["games"]):
         #    return output, first_game_link
         for game in games_list:
+            self.game_playtime[steam_id][str(game["appid"])] = game["playtime_forever"]
             if str(game["appid"]) not in self.db[steam_id]["games"]:
                 # Add space to separate games and steam name.
                 output += " - " + game["name"]
@@ -189,9 +216,7 @@ class SteamPurchases:
                 # Append game to games list.
                 self.db[steam_id]["games"][str(game["appid"])] = game["name"]
                 # Append gmw minutes to gmw list.
-                self.db[steam_id]["gmw"][str(game["appid"])] = self.get_gmw_minutes(
-                    game["appid"]
-                )
+                self.db[steam_id]["gmw"][str(game["appid"])] = self.get_gmw_minutes(game["appid"])
         return output, first_game_link
 
     def run_debug(self):
