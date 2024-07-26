@@ -28,6 +28,7 @@ class MyClient(discord.Bot):
         self.ready = True
         # Start the tasks to run in the background
         self.my_background_task.start()
+        print("======")
 
     @tasks.loop(seconds=60 * 15)  # Task that runs every 15 minutes
     async def my_background_task(self):
@@ -90,5 +91,47 @@ async def steam_dgmw(ctx):
     else:
         await ctx.followup.send(f"{output}")
 
+#@client.slash_command(name="hall_of_fame", description="Adds message to hall of fame.")
+#async def hall_of_fame(ctx: discord.ApplicationContext):
+#    await ctx.defer()
+#    interaction_message = await ctx.interaction.original_response()
+#    # Ensure the command is invoked in a reply
+#    if not interaction_message.reference:
+#        await ctx.respond("This command must be used in reply to a message.")
+#        return
+#
+#    # Fetch the replied message
+#    message_id = interaction_message.reference.message_id
+#    replied_message = await ctx.channel.fetch_message(message_id)
+#
+#    # Count the :mega: reactions
+#    mega_count = sum(reaction.count for reaction in replied_message.reactions if str(reaction.emoji) == "📣")
+#
+#    # Check if the count is greater than 5
+#    if mega_count > 0:
+#        await ctx.respond("it passed")
+#    else:
+#        await ctx.respond("it did not pass")
+
+# @client.tree.context_menu(name="add_to_HoF")
+# async def add_to_hof(interaction: discord.Interaction, message: discord.Message):
+#     mega_count = sum(reaction.count for reaction in message.reactions if str(reaction.emoji) == "📣")
+# 
+#     # Check if the count is greater than 5
+#     if mega_count > 0:
+#         await interaction.response.send_message("it passed")
+#     else:
+#         await interaction.response.send_message(f"it did not pass needs {5-mega_count}")
+
+@client.message_command(name="hall_of_fame")  # creates a global message command. use guild_ids=[] to create guild-specific commands.
+async def hall_of_fame(ctx, message: discord.Message):  # message commands return the message
+    #await ctx.respond(f"Message ID: `{message.id}`")
+    mega_count = sum(reaction.count for reaction in message.reactions if str(reaction.emoji) == "📣")
+
+    # Check if the count is greater than 5
+    if mega_count > 0:
+        await ctx.respond("it passed")
+    else:
+        await ctx.respond(f"it did not pass {5-mega_count}")
 
 client.run(SECRETS["DISCORD_TOKEN"])

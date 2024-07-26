@@ -7,7 +7,6 @@
       "975370": 585,
       "2477340": 599.85,
       "288160": 14.85,
-      "2567870": 67.35000000000001,
       "1245620": 629.85,
       "370360": 52.35,
       "647960": 44.85,
@@ -580,10 +579,8 @@
     "name": "LoomingThunder",
     "gmw": {
       "2198070": 119.85000000000001,
-      "1677770": 175.35,
       "647960": 44.85,
-      "774801": 112.35000000000001,
-      "1388770": 119.85000000000001
+      "774801": 112.35000000000001
     },
     "games": {
       "220": "Half-Life 2",
@@ -866,7 +863,6 @@
       "375480": "Chronicon",
       "2567870": "Chained Together",
       "219990": "Grim Dawn",
-      "1677770": "The Case of the Golden Idol",
       "1892790": "Polimines",
       "647960": "Rusted Warfare - RTS",
       "774801": "Crab Champions",
@@ -995,7 +991,7 @@
       "1203620": 359.84999999999997,
       "322190": 22.35,
       "571310": 44.85,
-      "1388770": 119.85000000000001
+      "647960": 74.85000000000001
     },
     "games": {
       "240": "Counter-Strike: Source",
@@ -1313,7 +1309,8 @@
       "571310": "SteamWorld Dig 2",
       "632470": "Disco Elysium",
       "204360": "Castle Crashers",
-      "1388770": "Cruelty Squad"
+      "1388770": "Cruelty Squad",
+      "647960": "Rusted Warfare - RTS"
     },
     "time": {}
   },
@@ -1387,7 +1384,8 @@
       "787810": "Rogue Heroes: Ruins of Tasos",
       "304930": "Unturned",
       "1169040": "Necesse",
-      "204360": "Castle Crashers"
+      "204360": "Castle Crashers",
+      "2567870": "Chained Together"
     },
     "time": {}
   },
@@ -1541,7 +1539,9 @@
   },
   "76561198124469854": {
     "name": "Mundee",
-    "gmw": {},
+    "gmw": {
+      "1388770": 299.84999999999997
+    },
     "games": {
       "6060": "Star Wars: Battlefront 2 (Classic, 2005)",
       "550": "Left 4 Dead 2",
@@ -1687,7 +1687,8 @@
       "1621690": "Core Keeper",
       "2658710": "Tinkerlands: A Shipwrecked Adventure",
       "1169040": "Necesse",
-      "1782210": "Crab Game"
+      "1782210": "Crab Game",
+      "1388770": "Cruelty Squad"
     },
     "time": {}
   },
