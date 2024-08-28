@@ -107,6 +107,9 @@ class SteamPurchases:
         # 100 to dollars, $4 per hour, 60 minutes.
         if len(response[str(app_id)]["data"]) == 0:
             return 0
+        # Check if free
+        if response[str(app_id)]["data"]["price_overview"]["final_formatted"] == "Free":
+            return 0
         gmw_minutes = (
             response[str(app_id)]["data"]["price_overview"]["final"] / 100 / 4 * 60
         )
@@ -152,9 +155,11 @@ class SteamPurchases:
 
     def print_dgmw(self):
         output = ""
+        total_gmw = {}
         for steam_id in self.db:
             if len(self.db[steam_id]["gmw"]) == 0:
                 continue
+            total_gmw[self.db[steam_id]["name"]] = 0
             games_list = self.get_games_list(steam_id)
             for appid in self.db[steam_id]["gmw"]:
                 hours_left = self.db[steam_id]["gmw"][appid] / 60 
@@ -165,6 +170,7 @@ class SteamPurchases:
                     continue
                 hours_in = game["playtime_forever"] / 60
                 hours_left -= hours_in
+                total_gmw[self.db[steam_id]["name"]] += hours_left
                 output += (
                     ":x: "
                     + self.db[steam_id]["name"]
@@ -177,6 +183,9 @@ class SteamPurchases:
                     + " more hrs` \n"
                 )
 
+        output += "==="
+        for player in total_gmw:
+            output += player + " needs " + str(round(total_gmw[player], 1)) + " hours \n"
         return output
     
     def week_passed(self):

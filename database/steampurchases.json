@@ -3,14 +3,11 @@
     "name": "Ender",
     "gmw": {
       "779340": 300,
-      "1066890": 300,
       "975370": 585,
       "2477340": 599.85,
-      "288160": 14.85,
       "1245620": 629.85,
       "370360": 52.35,
-      "647960": 44.85,
-      "1388770": 119.85000000000001
+      "1817230": 269.84999999999997
     },
     "games": {
       "4000": "Garry's Mod",
@@ -336,7 +333,12 @@
       "370360": "TIS-100",
       "647960": "Rusted Warfare - RTS",
       "2250090": "Missing Hiker",
-      "1388770": "Cruelty Squad"
+      "1388770": "Cruelty Squad",
+      "2828500": "The Jackbox Megapicker",
+      "442070": "Drawful 2",
+      "1817230": "Hi-Fi RUSH",
+      "434570": "Blood and Bacon",
+      "1127400": "Mindustry"
     },
     "time": {}
   },
@@ -352,8 +354,8 @@
       "322190": 22.35,
       "571310": 44.85,
       "632470": 59.85,
-      "647960": 44.85,
-      "681280": 93.60000000000001
+      "681280": 93.60000000000001,
+      "1127400": 149.85
     },
     "games": {
       "240": "Counter-Strike: Source",
@@ -571,16 +573,18 @@
       "647960": "Rusted Warfare - RTS",
       "681280": "Descenders",
       "2398450": "Classic Marathon",
-      "2398490": "Classic Marathon 2"
+      "2398490": "Classic Marathon 2",
+      "442070": "Drawful 2",
+      "2828500": "The Jackbox Megapicker",
+      "1127400": "Mindustry"
     },
     "time": {}
   },
   "76561198081061131": {
     "name": "LoomingThunder",
     "gmw": {
-      "2198070": 119.85000000000001,
-      "647960": 44.85,
-      "774801": 112.35000000000001
+      "774801": 112.35000000000001,
+      "1127400": 149.85
     },
     "games": {
       "220": "Half-Life 2",
@@ -866,15 +870,17 @@
       "1892790": "Polimines",
       "647960": "Rusted Warfare - RTS",
       "774801": "Crab Champions",
-      "1388770": "Cruelty Squad"
+      "1388770": "Cruelty Squad",
+      "442070": "Drawful 2",
+      "2828500": "The Jackbox Megapicker",
+      "1127400": "Mindustry",
+      "2141910": "Magic: The Gathering Arena"
     },
     "time": {}
   },
   "76561198038176996": {
     "name": "TheMajesticSpaceDuck",
-    "gmw": {
-      "2380550": 1
-    },
+    "gmw": {},
     "games": {
       "20900": "The Witcher: Enhanced Edition",
       "17470": "Dead Space (2008)",
@@ -987,11 +993,10 @@
     "name": "Teddy",
     "gmw": {
       "779340": 305.85,
-      "1507190": 119.85000000000001,
       "1203620": 359.84999999999997,
       "322190": 22.35,
       "571310": 44.85,
-      "647960": 74.85000000000001
+      "9420": 38.849999999999994
     },
     "games": {
       "240": "Counter-Strike: Source",
@@ -1310,14 +1315,19 @@
       "632470": "Disco Elysium",
       "204360": "Castle Crashers",
       "1388770": "Cruelty Squad",
-      "647960": "Rusted Warfare - RTS"
+      "647960": "Rusted Warfare - RTS",
+      "442070": "Drawful 2",
+      "2828500": "The Jackbox Megapicker",
+      "434570": "Blood and Bacon",
+      "9420": "Supreme Commander: Forged Alliance",
+      "1127400": "Mindustry",
+      "1422450": "Deadlock"
     },
     "time": {}
   },
   "76561198807270844": {
     "name": "Gagz",
     "gmw": {
-      "304930": 9,
       "1169040": 224.85
     },
     "games": {
@@ -1392,7 +1402,9 @@
   "76561198029215192": {
     "name": "BBE's Moustache",
     "gmw": {
-      "322190": 22.35
+      "322190": 56.1,
+      "1286680": 899.85,
+      "1127400": 149.85
     },
     "games": {
       "38400": "Fallout",
@@ -1533,15 +1545,15 @@
       "2881650": "Content Warning",
       "1145350": "Hades II",
       "223750": "DCS World Steam Edition",
-      "322190": "SteamWorld Heist"
+      "322190": "SteamWorld Heist",
+      "1286680": "Tiny Tina's Wonderlands",
+      "1127400": "Mindustry"
     },
     "time": {}
   },
   "76561198124469854": {
     "name": "Mundee",
-    "gmw": {
-      "1388770": 299.84999999999997
-    },
+    "gmw": {},
     "games": {
       "6060": "Star Wars: Battlefront 2 (Classic, 2005)",
       "550": "Left 4 Dead 2",
@@ -1688,7 +1700,10 @@
       "2658710": "Tinkerlands: A Shipwrecked Adventure",
       "1169040": "Necesse",
       "1782210": "Crab Game",
-      "1388770": "Cruelty Squad"
+      "1388770": "Cruelty Squad",
+      "647960": "Rusted Warfare - RTS",
+      "434570": "Blood and Bacon",
+      "1127400": "Mindustry"
     },
     "time": {}
   },
@@ -1698,7 +1713,9 @@
       "1169040": 149.85,
       "323190": 44.85,
       "289070": 44.85,
-      "356190": 37.35
+      "356190": 37.35,
+      "647960": 74.85000000000001,
+      "1127400": 149.85
     },
     "games": {
       "20920": "The Witcher 2: Assassins of Kings Enhanced Edition",
@@ -1796,7 +1813,9 @@
       "1169040": "Necesse",
       "323190": "Frostpunk",
       "289070": "Sid Meier's Civilization VI",
-      "356190": "Middle-earth\u2122: Shadow of War\u2122"
+      "356190": "Middle-earth\u2122: Shadow of War\u2122",
+      "647960": "Rusted Warfare - RTS",
+      "1127400": "Mindustry"
     },
     "time": {}
   },
@@ -2342,7 +2361,7 @@
     "gmw": {
       "244210": 299.84999999999997,
       "1268750": 337.34999999999997,
-      "2881650": 95.85
+      "1604030": 524.85
     },
     "games": {
       "10": "Counter-Strike",
@@ -2624,7 +2643,9 @@
       "632470": "Disco Elysium",
       "1268750": "Starship Troopers: Extermination",
       "2881650": "Content Warning",
-      "1485080": "Just Act Natural"
+      "1485080": "Just Act Natural",
+      "647960": "Rusted Warfare - RTS",
+      "1604030": "V Rising"
     },
     "time": {}
   },

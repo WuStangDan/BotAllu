@@ -3,6 +3,7 @@ import discord
 from discord.ext import tasks
 from steam_purchases import SteamPurchases
 from steam_playtime import SteamPlaytime
+from wow import wow_player_count
 
 # Load Secrets
 SECRETS = {}
@@ -28,7 +29,8 @@ class MyClient(discord.Bot):
         self.ready = True
         # Start the tasks to run in the background
         self.my_background_task.start()
-        print("======")
+        self.wow_chat_name.start()
+        print("====== Background tasks started ======")
 
     @tasks.loop(seconds=60 * 15)  # Task that runs every 15 minutes
     async def my_background_task(self):
@@ -42,6 +44,13 @@ class MyClient(discord.Bot):
         if check_purchases.gmw_output != "":
             await channel.send(check_purchases.gmw_output)
 
+    @tasks.loop(seconds=60 * 5)  # Task that runs every 5 minutes
+    async def wow_chat_name(self):
+        wow_channel = self.get_channel(CHANNEL_IDS["wowchat"])  # Your Channel ID goes here
+        channel_name = 'wow-chat-' + wow_player_count()
+        #await wow_channel.send(channel_name)
+        await wow_channel.edit(name=channel_name)
+
 
 client = MyClient()
 
@@ -49,7 +58,8 @@ client = MyClient()
 @client.slash_command(name="hello", description="Say hello to the bot")
 async def hello(ctx):
     name = ctx.author.name
-    await ctx.respond(f"Hello {name}!")
+    channel_id = ctx.channel.id
+    await ctx.respond(f"Hello {name} in channel {channel_id}!")
 
 
 @client.slash_command(
@@ -82,6 +92,8 @@ async def steam_dgmw(ctx):
     await ctx.defer()
     steam_purchases = SteamPurchases()
     output = steam_purchases.print_dgmw()
+    total = output.split("===", 1)[1]
+    output = output.split("===", 1)[0]
     if len(output) > 1990:
         loc = output[:1990].rfind(":x:")
         await ctx.followup.send(f"{output[:loc]}")
@@ -90,6 +102,7 @@ async def steam_dgmw(ctx):
             await ctx.followup.send(f"......")
     else:
         await ctx.followup.send(f"{output}")
+    await ctx.followup.send(f"{total}")
 
 #@client.slash_command(name="hall_of_fame", description="Adds message to hall of fame.")
 #async def hall_of_fame(ctx: discord.ApplicationContext):
@@ -125,13 +138,12 @@ async def steam_dgmw(ctx):
 
 @client.message_command(name="hall_of_fame")  # creates a global message command. use guild_ids=[] to create guild-specific commands.
 async def hall_of_fame(ctx, message: discord.Message):  # message commands return the message
-    #await ctx.respond(f"Message ID: `{message.id}`")
-    mega_count = sum(reaction.count for reaction in message.reactions if str(reaction.emoji) == "📣")
+    mega_count = sum(reaction.count for reaction in message.reactions if str(reaction.emoji) == "💾")
 
-    # Check if the count is greater than 5
-    if mega_count > 0:
+    # Check if the count is 4 or greater.
+    if mega_count >= 4:
         await ctx.respond("it passed")
     else:
-        await ctx.respond(f"it did not pass {5-mega_count}")
+        await ctx.respond(f"it did not pass, needs {4-mega_count} more 💾")
 
 client.run(SECRETS["DISCORD_TOKEN"])
