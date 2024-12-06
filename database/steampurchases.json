@@ -7,7 +7,10 @@
       "2477340": 599.85,
       "1245620": 629.85,
       "370360": 52.35,
-      "1817230": 269.84999999999997
+      "1817230": 269.84999999999997,
+      "546560": 296.84999999999997,
+      "573090": 224.85,
+      "2183900": 719.85
     },
     "games": {
       "4000": "Garry's Mod",
@@ -338,7 +341,18 @@
       "442070": "Drawful 2",
       "1817230": "Hi-Fi RUSH",
       "434570": "Blood and Bacon",
-      "1127400": "Mindustry"
+      "1127400": "Mindustry",
+      "2965660": "PILGRIM",
+      "1293830": "Forza Horizon 4",
+      "4580": "Warhammer 40,000: Dawn of War - Dark Crusade",
+      "9310": "Warhammer 40,000: Dawn of War - Winter Assault",
+      "9450": "Warhammer 40,000: Dawn of War - Soulstorm",
+      "2141730": "Backrooms: Escape Together",
+      "1286220": "Sea Power",
+      "2920570": "Dale & Dawson Stationery Supplies",
+      "546560": "Half-Life: Alyx",
+      "573090": "Stormworks: Build and Rescue",
+      "2183900": "Warhammer 40,000: Space Marine 2"
     },
     "time": {}
   },
@@ -346,7 +360,6 @@
     "name": "heydingus",
     "gmw": {
       "638230": 50,
-      "289130": 9,
       "204360": 22.35,
       "4500": 74.85000000000001,
       "20510": 37.35,
@@ -355,7 +368,8 @@
       "571310": 44.85,
       "632470": 59.85,
       "681280": 93.60000000000001,
-      "1127400": 149.85
+      "1127400": 149.85,
+      "1293830": 179.85
     },
     "games": {
       "240": "Counter-Strike: Source",
@@ -576,7 +590,10 @@
       "2398490": "Classic Marathon 2",
       "442070": "Drawful 2",
       "2828500": "The Jackbox Megapicker",
-      "1127400": "Mindustry"
+      "1127400": "Mindustry",
+      "1293830": "Forza Horizon 4",
+      "1583720": "Entropy : Zero 2",
+      "29900": "Dark Sector"
     },
     "time": {}
   },
@@ -584,7 +601,8 @@
     "name": "LoomingThunder",
     "gmw": {
       "774801": 112.35000000000001,
-      "1127400": 149.85
+      "1127400": 149.85,
+      "2920570": 119.85000000000001
     },
     "games": {
       "220": "Half-Life 2",
@@ -874,7 +892,11 @@
       "442070": "Drawful 2",
       "2828500": "The Jackbox Megapicker",
       "1127400": "Mindustry",
-      "2141910": "Magic: The Gathering Arena"
+      "2141910": "Magic: The Gathering Arena",
+      "2691350": ".Forty-Five",
+      "2114300": "Chronique des Silencieux",
+      "2141730": "Backrooms: Escape Together",
+      "2920570": "Dale & Dawson Stationery Supplies"
     },
     "time": {}
   },
@@ -985,7 +1007,8 @@
       "945360": "Among Us",
       "646570": "Slay the Spire",
       "1041720": "Kingdoms of Amalur: Re-Reckoning",
-      "2380550": "CONSORTIUM Remastered"
+      "2380550": "CONSORTIUM Remastered",
+      "995980": "Fae Tactics"
     },
     "time": {}
   },
@@ -1321,7 +1344,11 @@
       "434570": "Blood and Bacon",
       "9420": "Supreme Commander: Forged Alliance",
       "1127400": "Mindustry",
-      "1422450": "Deadlock"
+      "1422450": "Deadlock",
+      "2965660": "PILGRIM",
+      "2141730": "Backrooms: Escape Together",
+      "1484720": "Dead Estate",
+      "2920570": "Dale & Dawson Stationery Supplies"
     },
     "time": {}
   },
@@ -1395,16 +1422,19 @@
       "304930": "Unturned",
       "1169040": "Necesse",
       "204360": "Castle Crashers",
-      "2567870": "Chained Together"
+      "2567870": "Chained Together",
+      "2141730": "Backrooms: Escape Together",
+      "2920570": "Dale & Dawson Stationery Supplies"
     },
     "time": {}
   },
   "76561198029215192": {
     "name": "BBE's Moustache",
     "gmw": {
-      "322190": 56.1,
-      "1286680": 899.85,
-      "1127400": 149.85
+      "322190": 224.85,
+      "1127400": 149.85,
+      "1293830": 179.85,
+      "2920570": 119.85000000000001
     },
     "games": {
       "38400": "Fallout",
@@ -1545,9 +1575,14 @@
       "2881650": "Content Warning",
       "1145350": "Hades II",
       "223750": "DCS World Steam Edition",
-      "322190": "SteamWorld Heist",
       "1286680": "Tiny Tina's Wonderlands",
-      "1127400": "Mindustry"
+      "2183900": "Warhammer 40,000: Space Marine 2",
+      "322190": "SteamWorld Heist",
+      "1127400": "Mindustry",
+      "1293830": "Forza Horizon 4",
+      "2186680": "Warhammer 40,000: Rogue Trader",
+      "2141730": "Backrooms: Escape Together",
+      "2920570": "Dale & Dawson Stationery Supplies"
     },
     "time": {}
   },
@@ -1703,7 +1738,12 @@
       "1388770": "Cruelty Squad",
       "647960": "Rusted Warfare - RTS",
       "434570": "Blood and Bacon",
-      "1127400": "Mindustry"
+      "1127400": "Mindustry",
+      "1818450": "STALCRAFT: X",
+      "589870": "Learn to Fly 3",
+      "2141730": "Backrooms: Escape Together",
+      "2920570": "Dale & Dawson Stationery Supplies",
+      "2965660": "PILGRIM"
     },
     "time": {}
   },
@@ -1826,7 +1866,9 @@
       "2567870": 74.85000000000001,
       "322190": 224.85,
       "571310": 299.84999999999997,
-      "1388770": 299.84999999999997
+      "1388770": 299.84999999999997,
+      "2965660": 119.85000000000001,
+      "1849790": 269.84999999999997
     },
     "games": {
       "3830": "Psychonauts",
@@ -2352,7 +2394,12 @@
       "2567870": "Chained Together",
       "322190": "SteamWorld Heist",
       "571310": "SteamWorld Dig 2",
-      "1388770": "Cruelty Squad"
+      "1388770": "Cruelty Squad",
+      "2141730": "Backrooms: Escape Together",
+      "2920570": "Dale & Dawson Stationery Supplies",
+      "1422450": "Deadlock",
+      "2965660": "PILGRIM",
+      "1849790": "Uncle Chop's Rocket Shop"
     },
     "time": {}
   },
@@ -2361,7 +2408,8 @@
     "gmw": {
       "244210": 299.84999999999997,
       "1268750": 337.34999999999997,
-      "1604030": 524.85
+      "1604030": 524.85,
+      "2183900": 899.85
     },
     "games": {
       "10": "Counter-Strike",
@@ -2645,13 +2693,21 @@
       "2881650": "Content Warning",
       "1485080": "Just Act Natural",
       "647960": "Rusted Warfare - RTS",
-      "1604030": "V Rising"
+      "1604030": "V Rising",
+      "2567870": "Chained Together",
+      "2183900": "Warhammer 40,000: Space Marine 2",
+      "1422450": "Deadlock",
+      "534380": "Dying Light 2: Reloaded Edition"
     },
     "time": {}
   },
   "76561198140388623": {
     "name": "G_Wrath",
-    "gmw": {},
+    "gmw": {
+      "1845910": 899.85,
+      "360": 149.85,
+      "2920570": 119.85000000000001
+    },
     "games": {
       "220": "Half-Life 2",
       "340": "Half-Life 2: Lost Coast",
@@ -2725,7 +2781,11 @@
       "2200": "Quake III Arena",
       "2350": "Quake III: Team Arena",
       "2073850": "THE FINALS",
-      "1088850": "Marvel's Guardians of the Galaxy"
+      "1088850": "Marvel's Guardians of the Galaxy",
+      "320": "Half-Life 2: Deathmatch",
+      "1845910": "Dragon Age\u2122: The Veilguard",
+      "360": "Half-Life Deathmatch: Source",
+      "2920570": "Dale & Dawson Stationery Supplies"
     },
     "time": {}
   },
