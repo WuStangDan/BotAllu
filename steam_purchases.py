@@ -104,6 +104,15 @@ class SteamPurchases:
     def get_gmw_minutes(self, app_id):
         response_full = requests.get(self.steam_price_api + str(app_id))
         response = json.loads(response_full.text)
+        if str(app_id) not in response:
+            # Log Error
+            with open("database/error.txt", mode="a") as file:
+                file.write(
+                    str(app_id)
+                    + " not found in steam"
+                    + " at %s.\n" % (datetime.now())
+                )
+            return 0
         # 100 to dollars, $4 per hour, 60 minutes.
         if len(response[str(app_id)]["data"]) == 0:
             return 0
@@ -208,8 +217,9 @@ class SteamPurchases:
         # Check if ready for time update.
         self.game_playtime[steam_id] = {}
 
-        # Check GMW
-        self.check_gmw(steam_id, games_list)
+        # Check GMW, only if getting a games list returned.
+        if len(games_list) > 0:
+            self.check_gmw(steam_id, games_list)
 
         # causes bugs when some free games get removed.
         #if len(games_list) == len(self.db[steam_id]["games"]):

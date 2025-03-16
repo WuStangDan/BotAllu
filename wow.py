@@ -2,9 +2,9 @@ import requests
 
 
 def wow_player_count():
-    url = 'http://192.168.1.7:3000/data'
+    url = 'http://192.168.88.6:3000/data'
     try:
-        response = requests.get(url)
+        response = requests.get(url, timeout=5)
         response.raise_for_status()
     
         data = response.json()
@@ -13,4 +13,4 @@ def wow_player_count():
     
     
     except requests.RequestException as e:
-        return str(99)
+        return str("XX")

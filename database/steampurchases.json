@@ -7,10 +7,15 @@
       "2477340": 599.85,
       "1245620": 629.85,
       "370360": 52.35,
-      "1817230": 269.84999999999997,
       "546560": 296.84999999999997,
-      "573090": 224.85,
-      "2183900": 719.85
+      "2183900": 719.85,
+      "552590": 74.85000000000001,
+      "602960": 262.34999999999997,
+      "1677770": 175.35,
+      "924970": 44.85,
+      "1144200": 374.84999999999997,
+      "3058630": 479.84999999999997,
+      "427410": 374.84999999999997
     },
     "games": {
       "4000": "Garry's Mod",
@@ -352,14 +357,26 @@
       "2920570": "Dale & Dawson Stationery Supplies",
       "546560": "Half-Life: Alyx",
       "573090": "Stormworks: Build and Rescue",
-      "2183900": "Warhammer 40,000: Space Marine 2"
+      "2183900": "Warhammer 40,000: Space Marine 2",
+      "214510": "LEGO\u00ae The Lord of the Rings\u2122",
+      "2767030": "Marvel Rivals",
+      "552590": "The Sexy Brutale",
+      "602960": "Barotrauma",
+      "1677770": "The Case of the Golden Idol",
+      "924970": "Back 4 Blood",
+      "1144200": "Ready or Not",
+      "429530": "Falcon 4.0",
+      "2994020": "Puck",
+      "3058630": "Assetto Corsa EVO",
+      "1238840": "Battlefield 1 \u2122",
+      "427410": "Abiotic Factor",
+      "3240220": "Grand Theft Auto V Enhanced"
     },
     "time": {}
   },
   "76561197979973944": {
     "name": "heydingus",
     "gmw": {
-      "638230": 50,
       "204360": 22.35,
       "4500": 74.85000000000001,
       "20510": 37.35,
@@ -369,7 +386,15 @@
       "632470": 59.85,
       "681280": 93.60000000000001,
       "1127400": 149.85,
-      "1293830": 179.85
+      "238010": 44.85,
+      "362890": 74.85000000000001,
+      "555220": 53.849999999999994,
+      "1996010": 233.85,
+      "397740": 14.7,
+      "677160": 29.85,
+      "2965660": 47.85,
+      "924970": 44.85,
+      "2475490": 175.35
     },
     "games": {
       "240": "Counter-Strike: Source",
@@ -593,14 +618,27 @@
       "1127400": "Mindustry",
       "1293830": "Forza Horizon 4",
       "1583720": "Entropy : Zero 2",
-      "29900": "Dark Sector"
+      "29900": "Dark Sector",
+      "2767030": "Marvel Rivals",
+      "238010": "Deus Ex: Human Revolution - Director's Cut",
+      "362890": "Black Mesa",
+      "555220": "Detention",
+      "1996010": "Crow Country",
+      "397740": "Hylics",
+      "677160": "We Were Here Too",
+      "2965660": "PILGRIM",
+      "924970": "Back 4 Blood",
+      "2475490": "Mouthwashing",
+      "2994020": "Puck",
+      "335240": "Transformice",
+      "1902490": "Aperture Desk Job",
+      "265630": "Fistful of Frags"
     },
     "time": {}
   },
   "76561198081061131": {
     "name": "LoomingThunder",
     "gmw": {
-      "774801": 112.35000000000001,
       "1127400": 149.85,
       "2920570": 119.85000000000001
     },
@@ -896,13 +934,25 @@
       "2691350": ".Forty-Five",
       "2114300": "Chronique des Silencieux",
       "2141730": "Backrooms: Escape Together",
-      "2920570": "Dale & Dawson Stationery Supplies"
+      "2920570": "Dale & Dawson Stationery Supplies",
+      "328760": "SanctuaryRPG: Black Edition",
+      "497780": "Recursed",
+      "916730": "Gato Roboto",
+      "1210320": "Potion Craft: Alchemist Simulator",
+      "2396240": "SteamWorld Heist II",
+      "2455920": "Mimic Logic",
+      "1233070": "Isles of Sea and Sky",
+      "1295320": "Can of Wormholes",
+      "2767030": "Marvel Rivals",
+      "2644610": "Menace from the Deep"
     },
     "time": {}
   },
   "76561198038176996": {
     "name": "TheMajesticSpaceDuck",
-    "gmw": {},
+    "gmw": {
+      "870780": 599.85
+    },
     "games": {
       "20900": "The Witcher: Enhanced Edition",
       "17470": "Dead Space (2008)",
@@ -1008,7 +1058,9 @@
       "646570": "Slay the Spire",
       "1041720": "Kingdoms of Amalur: Re-Reckoning",
       "2380550": "CONSORTIUM Remastered",
-      "995980": "Fae Tactics"
+      "995980": "Fae Tactics",
+      "3240220": "Grand Theft Auto V Enhanced",
+      "870780": "Control Ultimate Edition"
     },
     "time": {}
   },
@@ -1019,7 +1071,11 @@
       "1203620": 359.84999999999997,
       "322190": 22.35,
       "571310": 44.85,
-      "9420": 38.849999999999994
+      "9420": 38.849999999999994,
+      "924970": 44.85,
+      "495420": 44.85,
+      "1426210": 119.85000000000001,
+      "2115390": 74.85000000000001
     },
     "games": {
       "240": "Counter-Strike: Source",
@@ -1348,14 +1404,28 @@
       "2965660": "PILGRIM",
       "2141730": "Backrooms: Escape Together",
       "1484720": "Dead Estate",
-      "2920570": "Dale & Dawson Stationery Supplies"
+      "2920570": "Dale & Dawson Stationery Supplies",
+      "2379780": "Balatro",
+      "2767030": "Marvel Rivals",
+      "774801": "Crab Champions",
+      "1313140": "Cult of the Lamb",
+      "924970": "Back 4 Blood",
+      "495420": "State of Decay 2",
+      "2994020": "Puck",
+      "1426210": "It Takes Two",
+      "3059070": "The Headliners",
+      "1238840": "Battlefield 1 \u2122",
+      "427410": "Abiotic Factor",
+      "2115390": "Project Unknown",
+      "2453360": "Cluckmech Oasis"
     },
     "time": {}
   },
   "76561198807270844": {
     "name": "Gagz",
     "gmw": {
-      "1169040": 224.85
+      "1169040": 224.85,
+      "1091500": 404.84999999999997
     },
     "games": {
       "3830": "Psychonauts",
@@ -1424,7 +1494,10 @@
       "204360": "Castle Crashers",
       "2567870": "Chained Together",
       "2141730": "Backrooms: Escape Together",
-      "2920570": "Dale & Dawson Stationery Supplies"
+      "2920570": "Dale & Dawson Stationery Supplies",
+      "2767030": "Marvel Rivals",
+      "1091500": "Cyberpunk 2077",
+      "335240": "Transformice"
     },
     "time": {}
   },
@@ -1433,8 +1506,10 @@
     "gmw": {
       "322190": 224.85,
       "1127400": 149.85,
-      "1293830": 179.85,
-      "2920570": 119.85000000000001
+      "2920570": 119.85000000000001,
+      "2198150": 179.85,
+      "333640": 382.34999999999997,
+      "924970": 44.85
     },
     "games": {
       "38400": "Fallout",
@@ -1582,13 +1657,23 @@
       "1293830": "Forza Horizon 4",
       "2186680": "Warhammer 40,000: Rogue Trader",
       "2141730": "Backrooms: Escape Together",
-      "2920570": "Dale & Dawson Stationery Supplies"
+      "2920570": "Dale & Dawson Stationery Supplies",
+      "2767030": "Marvel Rivals",
+      "2198150": "Tiny Glade",
+      "333640": "Caves of Qud",
+      "924970": "Back 4 Blood",
+      "3240220": "Grand Theft Auto V Enhanced"
     },
     "time": {}
   },
   "76561198124469854": {
     "name": "Mundee",
-    "gmw": {},
+    "gmw": {
+      "2162800": 281.09999999999997,
+      "495420": 44.85,
+      "2933130": 374.84999999999997,
+      "1426210": 119.85000000000001
+    },
     "games": {
       "6060": "Star Wars: Battlefront 2 (Classic, 2005)",
       "550": "Left 4 Dead 2",
@@ -1743,7 +1828,18 @@
       "589870": "Learn to Fly 3",
       "2141730": "Backrooms: Escape Together",
       "2920570": "Dale & Dawson Stationery Supplies",
-      "2965660": "PILGRIM"
+      "2965660": "PILGRIM",
+      "2767030": "Marvel Rivals",
+      "1318690": "shapez",
+      "2162800": "shapez 2",
+      "495420": "State of Decay 2",
+      "2933130": "The Lord of the Rings: Return to Moria\u2122",
+      "1426210": "It Takes Two",
+      "3059070": "The Headliners",
+      "1422450": "Deadlock",
+      "1238840": "Battlefield 1 \u2122",
+      "427410": "Abiotic Factor",
+      "2453360": "Cluckmech Oasis"
     },
     "time": {}
   },
@@ -1751,11 +1847,11 @@
     "name": "MonsieurGoostave",
     "gmw": {
       "1169040": 149.85,
-      "323190": 44.85,
       "289070": 44.85,
       "356190": 37.35,
       "647960": 74.85000000000001,
-      "1127400": 149.85
+      "1127400": 149.85,
+      "1088850": 134.85
     },
     "games": {
       "20920": "The Witcher 2: Assassins of Kings Enhanced Edition",
@@ -1855,7 +1951,10 @@
       "289070": "Sid Meier's Civilization VI",
       "356190": "Middle-earth\u2122: Shadow of War\u2122",
       "647960": "Rusted Warfare - RTS",
-      "1127400": "Mindustry"
+      "1127400": "Mindustry",
+      "2379780": "Balatro",
+      "1088850": "Marvel's Guardians of the Galaxy",
+      "3240220": "Grand Theft Auto V Enhanced"
     },
     "time": {}
   },
@@ -1868,7 +1967,15 @@
       "571310": 299.84999999999997,
       "1388770": 299.84999999999997,
       "2965660": 119.85000000000001,
-      "1849790": 269.84999999999997
+      "677160": 29.85,
+      "1782120": 239.85,
+      "2835570": 35.85,
+      "3087650": 74.85000000000001,
+      "2198150": 224.85,
+      "2969140": 89.10000000000001,
+      "2481020": 157.35,
+      "1993180": 299.84999999999997,
+      "2644610": 254.84999999999997
     },
     "games": {
       "3830": "Psychonauts",
@@ -2399,17 +2506,43 @@
       "2920570": "Dale & Dawson Stationery Supplies",
       "1422450": "Deadlock",
       "2965660": "PILGRIM",
-      "1849790": "Uncle Chop's Rocket Shop"
+      "1849790": "Uncle Chop's Rocket Shop",
+      "2767030": "Marvel Rivals",
+      "2807150": "Worshippers of Cthulhu",
+      "677160": "We Were Here Too",
+      "1782120": "ZERO Sievert",
+      "2835570": "Buckshot Roulette",
+      "3087650": "A Shelter Full of Cats",
+      "1898290": "LEGO\u00ae Bricktales",
+      "774801": "Crab Champions",
+      "2198150": "Tiny Glade",
+      "2754380": "The Roottrees are Dead",
+      "335240": "Transformice",
+      "1011610": "Radio General",
+      "2969140": "Checkout: Cashier Simulator",
+      "2481020": "Vampire Therapist",
+      "3059070": "The Headliners",
+      "1238840": "Battlefield 1 \u2122",
+      "427410": "Abiotic Factor",
+      "2756920": "Keep Driving",
+      "1993180": "Quilts and Cats of Calico",
+      "2644610": "Menace from the Deep",
+      "1270580": "Mind Over Magic",
+      "265630": "Fistful of Frags",
+      "2828500": "The Jackbox Megapicker",
+      "3240220": "Grand Theft Auto V Enhanced"
     },
     "time": {}
   },
   "76561197965811301": {
     "name": "SimpleWater",
     "gmw": {
-      "244210": 299.84999999999997,
       "1268750": 337.34999999999997,
-      "1604030": 524.85,
-      "2183900": 899.85
+      "2183900": 899.85,
+      "2708450": 44.85,
+      "924970": 44.85,
+      "3058630": 479.84999999999997,
+      "386940": 78.60000000000001
     },
     "games": {
       "10": "Counter-Strike",
@@ -2697,7 +2830,17 @@
       "2567870": "Chained Together",
       "2183900": "Warhammer 40,000: Space Marine 2",
       "1422450": "Deadlock",
-      "534380": "Dying Light 2: Reloaded Edition"
+      "534380": "Dying Light 2: Reloaded Edition",
+      "2708450": "Oh Deer",
+      "2767030": "Marvel Rivals",
+      "214510": "LEGO\u00ae The Lord of the Rings\u2122",
+      "924970": "Back 4 Blood",
+      "774801": "Crab Champions",
+      "2994020": "Puck",
+      "3058630": "Assetto Corsa EVO",
+      "275850": "No Man's Sky",
+      "1238840": "Battlefield 1 \u2122",
+      "386940": "Ultimate Chicken Horse"
     },
     "time": {}
   },
@@ -2706,7 +2849,9 @@
     "gmw": {
       "1845910": 899.85,
       "360": 149.85,
-      "2920570": 119.85000000000001
+      "2920570": 119.85000000000001,
+      "990080": 224.85,
+      "427410": 374.84999999999997
     },
     "games": {
       "220": "Half-Life 2",
@@ -2785,7 +2930,12 @@
       "320": "Half-Life 2: Deathmatch",
       "1845910": "Dragon Age\u2122: The Veilguard",
       "360": "Half-Life Deathmatch: Source",
-      "2920570": "Dale & Dawson Stationery Supplies"
+      "2920570": "Dale & Dawson Stationery Supplies",
+      "1426210": "It Takes Two",
+      "2767030": "Marvel Rivals",
+      "990080": "Hogwarts Legacy",
+      "774801": "Crab Champions",
+      "427410": "Abiotic Factor"
     },
     "time": {}
   },
@@ -2795,6 +2945,27 @@
       "222880": "Insurgency",
       "730": "Counter-Strike 2",
       "1173370": "Slapshot: Rebound"
+    },
+    "gmw": {},
+    "time": {}
+  },
+  "76561199036955667": {
+    "name": "maxiemouse",
+    "games": {
+      "3830": "Psychonauts",
+      "286160": "Tabletop Simulator",
+      "335240": "Transformice",
+      "707680": "Slapshot",
+      "857980": "Void Bastards",
+      "892970": "Valheim",
+      "945360": "Among Us",
+      "1055540": "A Short Hike",
+      "1097150": "Fall Guys",
+      "1173370": "Slapshot: Rebound",
+      "1452830": "Disc Space",
+      "1240440": "Halo Infinite",
+      "1938090": "Call of Duty\u00ae",
+      "2994020": "Puck"
     },
     "gmw": {},
     "time": {}
